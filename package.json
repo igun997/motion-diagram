@@ -6,13 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "render": "node src/cli/index.js render",
-    "studio": "remotion studio src/scenes/index.js"
+    "studio": "remotion studio src/scenes/index.js",
+    "mcp": "node src/mcp/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@remotion/cli": "^4.0.487",
     "@remotion/gif": "^4.0.487",
     "@remotion/renderer": "^4.0.487",
@@ -22,6 +24,7 @@
     "remotion": "^4.0.487"
   },
   "bin": {
-    "motion-diagram": "src/cli/index.js"
+    "motion-diagram": "src/cli/index.js",
+    "motion-diagram-mcp": "src/mcp/server.js"
   }
 }
