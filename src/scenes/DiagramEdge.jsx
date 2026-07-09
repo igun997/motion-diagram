@@ -3,7 +3,11 @@ import React from "react";
 import { interpolate } from "remotion";
 import { pointsToPath, pathLength, pointAt, endAngle } from "./geometry.js";
 
-export function DiagramEdge({ edge, frame, drawFrame, drawDuration = 18 }) {
+export function DiagramEdge({ edge, frame, drawFrame, drawDuration = 18, theme }) {
+  const edgeColor = theme?.edge || "#64748b";
+  const labelBg = theme?.edgeLabelBg || "#0f172a";
+  const labelStroke = theme?.edgeLabelStroke || "#334155";
+  const labelText = theme?.edgeLabelText || "#cbd5e1";
   const points = edge.points;
   const len = pathLength(points);
   const local = frame - drawFrame;
@@ -31,7 +35,7 @@ export function DiagramEdge({ edge, frame, drawFrame, drawDuration = 18 }) {
       <path
         d={d}
         fill="none"
-        stroke="#64748b"
+        stroke={edgeColor}
         strokeWidth={2.5}
         strokeDasharray={dash}
         strokeDashoffset={offset}
@@ -40,7 +44,7 @@ export function DiagramEdge({ edge, frame, drawFrame, drawDuration = 18 }) {
       {showArrow && (
         <polygon
           points="0,-6 12,0 0,6"
-          fill="#64748b"
+          fill={edgeColor}
           transform={`translate(${tip.x} ${tip.y}) rotate(${ang})`}
         />
       )}
@@ -52,13 +56,13 @@ export function DiagramEdge({ edge, frame, drawFrame, drawDuration = 18 }) {
             width={edge.label.length * 9 + 12}
             height={22}
             rx={6}
-            fill="#0f172a"
-            stroke="#334155"
+            fill={labelBg}
+            stroke={labelStroke}
           />
           <text
             x={mid.x}
             y={mid.y}
-            fill="#cbd5e1"
+            fill={labelText}
             fontSize={14}
             fontFamily="Inter, system-ui, sans-serif"
             textAnchor="middle"

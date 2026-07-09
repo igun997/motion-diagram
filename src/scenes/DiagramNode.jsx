@@ -9,7 +9,7 @@ const COLORS = {
   stadium: { fill: "#0f3b2e", stroke: "#34d399" },
 };
 
-export function DiagramNode({ node, frame, fps, appearFrame }) {
+export function DiagramNode({ node, frame, fps, appearFrame, theme }) {
   const local = frame - appearFrame;
   const s = spring({
     frame: local,
@@ -21,7 +21,9 @@ export function DiagramNode({ node, frame, fps, appearFrame }) {
   const opacity = local < 0 ? 0 : interpolate(s, [0, 1], [0, 1], { extrapolateRight: "clamp" });
 
   const { x, y, width, height, shape, label } = node;
-  const c = COLORS[shape] || COLORS.rect;
+  const shapes = theme?.shapes || COLORS;
+  const c = shapes[shape] || shapes.rect || COLORS.rect;
+  const nodeText = theme?.nodeText || "#f1f5f9";
   const cx = x;
   const cy = y;
   const icon = resolveIcon(node);
@@ -79,7 +81,7 @@ export function DiagramNode({ node, frame, fps, appearFrame }) {
       <text
         x={cx + labelDx}
         y={cy}
-        fill="#f1f5f9"
+        fill={nodeText}
         fontSize={20}
         fontFamily="Inter, system-ui, sans-serif"
         fontWeight={600}

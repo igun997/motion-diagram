@@ -2,7 +2,8 @@
 // A group is any set of nodes sharing node.group. Optional group metadata can
 // come from scene.groups: [{ id, label, color }].
 
-const PAD = 34;
+const PAD = 52;       // breathing room around group members
+const TOP_EXTRA = 34; // extra top space for the label tab
 
 export function computeGroups(layoutNodes, groupMeta = []) {
   const metaById = new Map((groupMeta || []).map((g) => [g.id, g]));
@@ -29,9 +30,9 @@ export function computeGroups(layoutNodes, groupMeta = []) {
       label: meta.label || id,
       color: meta.color || "#475569",
       x: minX - PAD,
-      y: minY - PAD - 22, // extra top room for label
+      y: minY - PAD - TOP_EXTRA,
       width: maxX - minX + PAD * 2,
-      height: maxY - minY + PAD * 2 + 22,
+      height: maxY - minY + PAD * 2 + TOP_EXTRA,
     });
   }
   return boxes;

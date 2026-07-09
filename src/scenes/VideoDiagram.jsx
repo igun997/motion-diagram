@@ -28,7 +28,7 @@ function useCamera(events, frame, bounds, width, height) {
   }, [events, frame, bounds, width, height]);
 }
 
-export function VideoDiagram({ layout, events, groups = [], nodeAppear, edgeDraw }) {
+export function VideoDiagram({ layout, events, groups = [], theme, nodeAppear, edgeDraw }) {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const { nodes, edges, bounds } = layout;
@@ -41,13 +41,14 @@ export function VideoDiagram({ layout, events, groups = [], nodeAppear, edgeDraw
   for (const e of events) {
     if (e.type === "pulse" && e.onArrive && e.onArrive.flash) {
       const edge = edgeById.get(e.edge);
-      if (edge) flashes.push({ nodeId: edge.to, at: e.at + (e.durationInFrames || 0) });
+      // reverse pulse travels to->from, so it ARRIVES at edge.from
+      if (edge) flashes.push({ nodeId: e.reverse ? edge.from : edge.to, at: e.at + (e.durationInFrames || 0) });
     }
     if (e.type === "flash") flashes.push({ nodeId: e.target, at: e.at });
   }
 
   return (
-    <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 30%, #0b1220, #060912)" }}>
+    <AbsoluteFill style={{ background: theme?.background || "radial-gradient(circle at 50% 30%, #0b1220, #060912)" }}>
       <svg width={width} height={height}>
         <g transform={`translate(${cam.tx} ${cam.ty}) scale(${cam.scale})`}>
           {/* group boxes (behind everything) */}
@@ -61,7 +62,7 @@ export function VideoDiagram({ layout, events, groups = [], nodeAppear, edgeDraw
           {edges.map((edge) => {
             const drawEv = events.find((e) => e.type === "reveal-edge" && e.target === edge.id);
             const drawFrame = drawEv ? drawEv.at : 0;
-            return <DiagramEdge key={edge.id} edge={edge} frame={frame} drawFrame={drawFrame} drawDuration={edgeDraw} />;
+            return <DiagramEdge key={edge.id} edge={edge} frame={frame} drawFrame={drawFrame} drawDuration={edgeDraw} theme={theme} />;
           })}
           {/* pulses */}
           {events
@@ -90,13 +91,13 @@ export function VideoDiagram({ layout, events, groups = [], nodeAppear, edgeDraw
             if (local < 0 || local > 20) return null;
             const r = interpolate(local, [0, 20], [node.width / 2, node.width], { extrapolateRight: "clamp" });
             const op = interpolate(local, [0, 20], [0.6, 0], { extrapolateRight: "clamp" });
-            return <circle key={`f${i}`} cx={node.x} cy={node.y} r={r} fill="none" stroke="#fbbf24" strokeWidth={3} opacity={op} />;
+            return <circle key={`f${i}`} cx={node.x} cy={node.y} r={r} fill="none" stroke={theme?.flash || "#fbbf24"} strokeWidth={3} opacity={op} />;
           })}
           {/* nodes */}
           {nodes.map((node) => {
             const appearEv = events.find((e) => e.type === "reveal-node" && e.target === node.id);
             const appearFrame = appearEv ? appearEv.at : 0;
-            return <DiagramNode key={node.id} node={node} frame={frame} fps={fps} appearFrame={appearFrame} />;
+            return <DiagramNode key={node.id} node={node} frame={frame} fps={fps} appearFrame={appearFrame} theme={theme} />;
           })}
         </g>
       </svg>
