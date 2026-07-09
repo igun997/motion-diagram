@@ -4,6 +4,17 @@ import dagre from "dagre";
 
 const NODE_W = 160;
 const NODE_H = 64;
+const CHAR_W = 11;   // approx px per label char at fontSize 20
+const PAD_X = 44;    // horizontal padding inside node
+const ICON_W = 30;   // room reserved when node has an icon
+
+function nodeWidth(n) {
+  const labelLen = (n.label || "").length;
+  const hasIcon = !!(n.icon || n.iconText || n.iconPath);
+  let w = labelLen * CHAR_W + PAD_X + (hasIcon ? ICON_W : 0);
+  if (n.shape === "diamond") w += 24;
+  return Math.max(NODE_W, w);
+}
 
 export function layoutDiagram(spec, opts = {}) {
   const { rankdir = "TB", nodesep = 130, ranksep = 150 } = opts;
@@ -22,7 +33,7 @@ export function layoutDiagram(spec, opts = {}) {
   }
 
   for (const n of spec.nodes) {
-    const w = n.shape === "diamond" ? NODE_W + 20 : NODE_W;
+    const w = nodeWidth(n);
     g.setNode(n.id, { width: w, height: NODE_H });
     if (n.group) g.setParent(n.id, `cluster:${n.group}`);
   }
