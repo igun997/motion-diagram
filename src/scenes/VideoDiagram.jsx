@@ -1,6 +1,13 @@
 // Main Remotion composition. Executes normalized timeline over a laid-out spec.
 import React, { useMemo } from "react";
-import { AbsoluteFill, useCurrentFrame, useVideoConfig, Audio, Sequence, staticFile } from "remotion";
+import {
+  AbsoluteFill,
+  useCurrentFrame,
+  useVideoConfig,
+  Audio,
+  Sequence,
+  staticFile,
+} from "remotion";
 import { interpolate, Easing } from "remotion";
 import { DiagramNode } from "./DiagramNode.jsx";
 import { DiagramEdge } from "./DiagramEdge.jsx";
@@ -88,7 +95,17 @@ function useCamera(events, edgeById, frame, bounds, width, height, followMode, f
   }, [events, edgeById, frame, bounds, width, height, followMode, followZoom]);
 }
 
-export function VideoDiagram({ layout, events, groups = [], theme, legend = [], camera, cameraZoom, nodeAppear, edgeDraw }) {
+export function VideoDiagram({
+  layout,
+  events,
+  groups = [],
+  theme,
+  legend = [],
+  camera,
+  cameraZoom,
+  nodeAppear,
+  edgeDraw,
+}) {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const { nodes, edges, bounds } = layout;
@@ -102,19 +119,29 @@ export function VideoDiagram({ layout, events, groups = [], theme, legend = [], 
     if (e.type === "pulse" && e.onArrive && e.onArrive.flash) {
       const edge = edgeById.get(e.edge);
       // reverse pulse travels to->from, so it ARRIVES at edge.from
-      if (edge) flashes.push({ nodeId: e.reverse ? edge.from : edge.to, at: e.at + (e.durationInFrames || 0) });
+      if (edge)
+        flashes.push({
+          nodeId: e.reverse ? edge.from : edge.to,
+          at: e.at + (e.durationInFrames || 0),
+        });
     }
     if (e.type === "flash") flashes.push({ nodeId: e.target, at: e.at });
   }
 
   return (
-    <AbsoluteFill style={{ background: theme?.background || "radial-gradient(circle at 50% 30%, #0b1220, #060912)" }}>
+    <AbsoluteFill
+      style={{
+        background: theme?.background || "radial-gradient(circle at 50% 30%, #0b1220, #060912)",
+      }}
+    >
       <svg width={width} height={height}>
         <g transform={`translate(${cam.tx} ${cam.ty}) scale(${cam.scale})`}>
           {/* group boxes (behind everything) */}
           {groups.map((box) => {
             const first = events.find(
-              (e) => e.type === "reveal-node" && layout.nodes.find((n) => n.id === e.target && n.group === box.id)
+              (e) =>
+                e.type === "reveal-node" &&
+                layout.nodes.find((n) => n.id === e.target && n.group === box.id)
             );
             return <GroupBox key={box.id} box={box} appearFrame={first ? first.at : 0} />;
           })}
@@ -122,7 +149,16 @@ export function VideoDiagram({ layout, events, groups = [], theme, legend = [], 
           {edges.map((edge) => {
             const drawEv = events.find((e) => e.type === "reveal-edge" && e.target === edge.id);
             const drawFrame = drawEv ? drawEv.at : 0;
-            return <DiagramEdge key={edge.id} edge={edge} frame={frame} drawFrame={drawFrame} drawDuration={edgeDraw} theme={theme} />;
+            return (
+              <DiagramEdge
+                key={edge.id}
+                edge={edge}
+                frame={frame}
+                drawFrame={drawFrame}
+                drawDuration={edgeDraw}
+                theme={theme}
+              />
+            );
           })}
           {/* pulses */}
           {events
@@ -149,9 +185,22 @@ export function VideoDiagram({ layout, events, groups = [], theme, legend = [], 
             if (!node) return null;
             const local = frame - f.at;
             if (local < 0 || local > 20) return null;
-            const r = interpolate(local, [0, 20], [node.width / 2, node.width], { extrapolateRight: "clamp" });
+            const r = interpolate(local, [0, 20], [node.width / 2, node.width], {
+              extrapolateRight: "clamp",
+            });
             const op = interpolate(local, [0, 20], [0.6, 0], { extrapolateRight: "clamp" });
-            return <circle key={`f${i}`} cx={node.x} cy={node.y} r={r} fill="none" stroke={theme?.flash || "#fbbf24"} strokeWidth={3} opacity={op} />;
+            return (
+              <circle
+                key={`f${i}`}
+                cx={node.x}
+                cy={node.y}
+                r={r}
+                fill="none"
+                stroke={theme?.flash || "#fbbf24"}
+                strokeWidth={3}
+                opacity={op}
+              />
+            );
           })}
           {/* process rings (working spinner around node) */}
           {events
@@ -174,7 +223,16 @@ export function VideoDiagram({ layout, events, groups = [], theme, legend = [], 
           {nodes.map((node) => {
             const appearEv = events.find((e) => e.type === "reveal-node" && e.target === node.id);
             const appearFrame = appearEv ? appearEv.at : 0;
-            return <DiagramNode key={node.id} node={node} frame={frame} fps={fps} appearFrame={appearFrame} theme={theme} />;
+            return (
+              <DiagramNode
+                key={node.id}
+                node={node}
+                frame={frame}
+                fps={fps}
+                appearFrame={appearFrame}
+                theme={theme}
+              />
+            );
           })}
         </g>
         {/* legend: fixed screen position, outside camera transform */}
@@ -185,7 +243,11 @@ export function VideoDiagram({ layout, events, groups = [], theme, legend = [], 
         const cues = [];
         if (e.sfx && SFX_FILES[e.sfx]) cues.push({ at: e.at, file: SFX_FILES[e.sfx], k: `s${i}` });
         if (e.onArrive && e.onArrive.sfx && SFX_FILES[e.onArrive.sfx])
-          cues.push({ at: e.at + (e.durationInFrames || 0), file: SFX_FILES[e.onArrive.sfx], k: `a${i}` });
+          cues.push({
+            at: e.at + (e.durationInFrames || 0),
+            file: SFX_FILES[e.onArrive.sfx],
+            k: `a${i}`,
+          });
         return cues.map((c) => (
           <Sequence key={c.k} from={c.at} durationInFrames={Math.round(fps)}>
             <Audio src={staticFile(c.file)} />

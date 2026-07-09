@@ -2,7 +2,7 @@
 // A group is any set of nodes sharing node.group. Optional group metadata can
 // come from scene.groups: [{ id, label, color }].
 
-const PAD = 52;       // breathing room around group members
+const PAD = 52; // breathing room around group members
 const TOP_EXTRA = 34; // extra top space for the label tab
 
 export function computeGroups(layoutNodes, groupMeta = []) {
@@ -17,7 +17,10 @@ export function computeGroups(layoutNodes, groupMeta = []) {
 
   const boxes = [];
   for (const [id, nodes] of byGroup) {
-    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    let minX = Infinity,
+      minY = Infinity,
+      maxX = -Infinity,
+      maxY = -Infinity;
     for (const n of nodes) {
       minX = Math.min(minX, n.x - n.width / 2);
       minY = Math.min(minY, n.y - n.height / 2);

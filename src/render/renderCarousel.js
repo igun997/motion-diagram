@@ -44,7 +44,12 @@ export function buildSlides(scene) {
 
 async function renderOneGif(serveUrl, scene, outGif, onProgress) {
   const envVariables = { MOTION_SCENE_JSON: JSON.stringify(scene) };
-  const composition = await selectComposition({ serveUrl, id: "MotionDiagram", inputProps: {}, envVariables });
+  const composition = await selectComposition({
+    serveUrl,
+    id: "MotionDiagram",
+    inputProps: {},
+    envVariables,
+  });
   await renderMedia({
     composition,
     serveUrl,
@@ -59,7 +64,9 @@ async function renderOneGif(serveUrl, scene, outGif, onProgress) {
 }
 
 function gifToWebp(gifPath, webpPath) {
-  const r = spawnSync("ffmpeg", ["-y", "-i", gifPath, "-loop", "0", "-q:v", "70", webpPath], { encoding: "utf8" });
+  const r = spawnSync("ffmpeg", ["-y", "-i", gifPath, "-loop", "0", "-q:v", "70", webpPath], {
+    encoding: "utf8",
+  });
   return r.status === 0;
 }
 

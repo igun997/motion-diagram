@@ -6,7 +6,8 @@ import { interpolate, useCurrentFrame } from "remotion";
 export function GroupBox({ box, appearFrame = 0 }) {
   const frame = useCurrentFrame();
   const local = frame - appearFrame;
-  const opacity = local < 0 ? 0 : interpolate(local, [0, 16], [0, 1], { extrapolateRight: "clamp" });
+  const opacity =
+    local < 0 ? 0 : interpolate(local, [0, 16], [0, 1], { extrapolateRight: "clamp" });
 
   // marching-ants: shift dashoffset over time
   const dashOffset = -(local * 0.8);
@@ -29,7 +30,15 @@ export function GroupBox({ box, appearFrame = 0 }) {
         strokeDashoffset={dashOffset}
       />
       {/* label tab */}
-      <rect x={x + 14} y={y - 2} width={label.length * 9 + 20} height={26} rx={8} fill={color} fillOpacity={0.9} />
+      <rect
+        x={x + 14}
+        y={y - 2}
+        width={label.length * 9 + 20}
+        height={26}
+        rx={8}
+        fill={color}
+        fillOpacity={0.9}
+      />
       <text
         x={x + 24}
         y={y + 11}

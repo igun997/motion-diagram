@@ -1,5 +1,11 @@
 {
-  "meta": { "title": "Microservices Carousel", "fps": 30, "width": 1080, "height": 1080, "mode": "carousel" },
+  "meta": {
+    "title": "Microservices Carousel",
+    "fps": 30,
+    "width": 1080,
+    "height": 1080,
+    "mode": "carousel"
+  },
   "nodes": [
     { "id": "user", "label": "User", "shape": "rect", "icon": "user", "group": "edge" },
     { "id": "cdn", "label": "CDN", "shape": "rect", "icon": "globe", "group": "edge" },
@@ -22,24 +28,48 @@
     { "id": "c_db", "from": "cache", "to": "db", "label": "sync" }
   ],
   "timeline": [
-    { "at": 0,  "type": "reveal-node", "target": "user" },
-    { "at": 8,  "type": "reveal-node", "target": "cdn" },
+    { "at": 0, "type": "reveal-node", "target": "user" },
+    { "at": 8, "type": "reveal-node", "target": "cdn" },
     { "at": 16, "type": "reveal-node", "target": "gw" },
     { "at": 24, "type": "reveal-edge", "target": "u_cdn" },
     { "at": 40, "type": "reveal-edge", "target": "cdn_gw" },
-    { "at": 55, "type": "pulse", "edge": "u_cdn", "color": "#38bdf8", "onArrive": { "flash": true } },
-    { "at": 85, "type": "pulse", "edge": "cdn_gw", "color": "#f59e0b", "onArrive": { "flash": true } },
+    {
+      "at": 55,
+      "type": "pulse",
+      "edge": "u_cdn",
+      "color": "#38bdf8",
+      "onArrive": { "flash": true }
+    },
+    {
+      "at": 85,
+      "type": "pulse",
+      "edge": "cdn_gw",
+      "color": "#f59e0b",
+      "onArrive": { "flash": true }
+    },
 
-    { "at": 0,  "type": "reveal-node", "target": "orders" },
-    { "at": 8,  "type": "reveal-node", "target": "pay" },
+    { "at": 0, "type": "reveal-node", "target": "orders" },
+    { "at": 8, "type": "reveal-node", "target": "pay" },
     { "at": 16, "type": "reveal-node", "target": "queue" },
     { "at": 24, "type": "reveal-edge", "target": "o_pay" },
     { "at": 40, "type": "reveal-edge", "target": "pay_q" },
-    { "at": 55, "type": "pulse", "edge": "o_pay", "color": "#34d399", "onArrive": { "flash": true } },
-    { "at": 85, "type": "pulse", "edge": "pay_q", "color": "#a78bfa", "onArrive": { "flash": true } },
+    {
+      "at": 55,
+      "type": "pulse",
+      "edge": "o_pay",
+      "color": "#34d399",
+      "onArrive": { "flash": true }
+    },
+    {
+      "at": 85,
+      "type": "pulse",
+      "edge": "pay_q",
+      "color": "#a78bfa",
+      "onArrive": { "flash": true }
+    },
 
-    { "at": 0,  "type": "reveal-node", "target": "cache" },
-    { "at": 8,  "type": "reveal-node", "target": "db" },
+    { "at": 0, "type": "reveal-node", "target": "cache" },
+    { "at": 8, "type": "reveal-node", "target": "db" },
     { "at": 24, "type": "reveal-edge", "target": "c_db" },
     { "at": 55, "type": "pulse", "edge": "c_db", "color": "#22d3ee", "onArrive": { "flash": true } }
   ]

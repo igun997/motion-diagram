@@ -4,9 +4,9 @@ import dagre from "dagre";
 
 const NODE_W = 160;
 const NODE_H = 64;
-const CHAR_W = 11;   // approx px per label char at fontSize 20
-const PAD_X = 44;    // horizontal padding inside node
-const ICON_W = 30;   // room reserved when node has an icon
+const CHAR_W = 11; // approx px per label char at fontSize 20
+const PAD_X = 44; // horizontal padding inside node
+const ICON_W = 30; // room reserved when node has an icon
 
 function nodeWidth(n) {
   const labelLen = (n.label || "").length;

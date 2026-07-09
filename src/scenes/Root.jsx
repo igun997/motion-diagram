@@ -36,8 +36,20 @@ function loadScene() {
       { at: 20, type: "reveal-node", target: "db" },
       { at: 26, type: "reveal-edge", target: "e1" },
       { at: 44, type: "reveal-edge", target: "e2" },
-      { at: 50, type: "pulse", edge: "e1", color: "#38bdf8", onArrive: { flash: true, sfx: "beep" } },
-      { at: 82, type: "pulse", edge: "e2", color: "#f59e0b", onArrive: { flash: true, sfx: "beep" } },
+      {
+        at: 50,
+        type: "pulse",
+        edge: "e1",
+        color: "#38bdf8",
+        onArrive: { flash: true, sfx: "beep" },
+      },
+      {
+        at: 82,
+        type: "pulse",
+        edge: "e2",
+        color: "#f59e0b",
+        onArrive: { flash: true, sfx: "beep" },
+      },
     ],
   };
 }
@@ -63,7 +75,17 @@ export function RemotionRoot() {
       fps={fps}
       width={width}
       height={height}
-      defaultProps={{ layout, events, groups, theme, legend: scene.legend || [], camera: meta.camera || "fit", cameraZoom: meta.cameraZoom, nodeAppear: 20, edgeDraw: 18 }}
+      defaultProps={{
+        layout,
+        events,
+        groups,
+        theme,
+        legend: scene.legend || [],
+        camera: meta.camera || "fit",
+        cameraZoom: meta.cameraZoom,
+        nodeAppear: 20,
+        edgeDraw: 18,
+      }}
     />
   );
 }

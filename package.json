@@ -1,17 +1,48 @@
 {
   "name": "motion-diagram",
   "version": "1.0.0",
-  "description": "",
+  "description": "Agent-driven animated API/flow diagram renderer (MP4 + carousel) with an MCP server.",
   "main": "src/cli/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "render": "node src/cli/index.js render",
     "studio": "remotion studio src/scenes/index.js",
-    "mcp": "node src/mcp/server.js"
+    "mcp": "node src/mcp/server.js",
+    "doctor": "node scripts/doctor.js",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "install-skill": "node scripts/install-skill.js",
+    "postinstall": "node scripts/install-skill.js --auto || true"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "mcp",
+    "remotion",
+    "diagram",
+    "animation",
+    "video",
+    "api-diagram",
+    "motion-diagram",
+    "ai-agent"
+  ],
+  "author": "igun997",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/igun997/motion-diagram.git"
+  },
+  "homepage": "https://github.com/igun997/motion-diagram#readme",
+  "bugs": {
+    "url": "https://github.com/igun997/motion-diagram/issues"
+  },
+  "files": [
+    "src",
+    "docs",
+    "examples",
+    "public/sfx",
+    "scripts",
+    "README.md",
+    "LICENSE"
+  ],
   "type": "module",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
@@ -22,6 +53,13 @@
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "remotion": "^4.0.487"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "eslint-plugin-react": "^7.37.0",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2"
   },
   "bin": {
     "motion-diagram": "src/cli/index.js",

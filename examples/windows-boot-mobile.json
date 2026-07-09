@@ -1,5 +1,11 @@
 {
-  "meta": { "title": "Windows Boot Flow", "fps": 30, "width": 1080, "height": 1920, "theme": "blueprint" },
+  "meta": {
+    "title": "Windows Boot Flow",
+    "fps": 30,
+    "width": 1080,
+    "height": 1920,
+    "theme": "blueprint"
+  },
   "legend": [
     { "label": "Boot stage", "color": "#7dd3fc", "style": "solid" },
     { "label": "Load driver", "color": "#fef08a", "style": "dashed" },
@@ -11,63 +17,184 @@
     { "id": "session", "label": "User Session", "color": "#34d399" }
   ],
   "nodes": [
-    { "id": "power", "label": "Power On", "shape": "stadium", "iconText": "⏻", "group": "firmware" },
+    {
+      "id": "power",
+      "label": "Power On",
+      "shape": "stadium",
+      "iconText": "⏻",
+      "group": "firmware"
+    },
     { "id": "uefi", "label": "UEFI / BIOS", "shape": "rect", "icon": "gear", "group": "firmware" },
     { "id": "boot", "label": "Bootmgr", "shape": "rect", "icon": "file", "group": "firmware" },
 
     { "id": "loader", "label": "winload.efi", "shape": "rect", "icon": "bolt", "group": "kernel" },
     { "id": "kernel", "label": "ntoskrnl.exe", "shape": "rect", "icon": "gear", "group": "kernel" },
-    { "id": "drivers", "label": "Load Drivers", "shape": "rect", "icon": "gear", "group": "kernel" },
+    {
+      "id": "drivers",
+      "label": "Load Drivers",
+      "shape": "rect",
+      "icon": "gear",
+      "group": "kernel"
+    },
 
     { "id": "smss", "label": "smss.exe", "shape": "rect", "icon": "server", "group": "session" },
-    { "id": "winlogon", "label": "winlogon.exe", "shape": "rect", "icon": "lock", "group": "session" },
-    { "id": "desktop", "label": "Desktop", "shape": "stadium", "iconText": "🪟", "group": "session" }
+    {
+      "id": "winlogon",
+      "label": "winlogon.exe",
+      "shape": "rect",
+      "icon": "lock",
+      "group": "session"
+    },
+    {
+      "id": "desktop",
+      "label": "Desktop",
+      "shape": "stadium",
+      "iconText": "🪟",
+      "group": "session"
+    }
   ],
   "edges": [
-    { "id": "p_u", "from": "power", "to": "uefi", "label": "POST", "color": "#7dd3fc", "style": "solid" },
-    { "id": "u_b", "from": "uefi", "to": "boot", "label": "find ESP", "color": "#7dd3fc", "style": "solid" },
-    { "id": "b_l", "from": "boot", "to": "loader", "label": "read BCD", "color": "#7dd3fc", "style": "solid" },
-    { "id": "l_k", "from": "loader", "to": "kernel", "label": "load kernel", "color": "#7dd3fc", "style": "solid" },
-    { "id": "k_d", "from": "kernel", "to": "drivers", "label": "init", "color": "#fef08a", "style": "dashed" },
-    { "id": "d_s", "from": "drivers", "to": "smss", "label": "start", "color": "#7dd3fc", "style": "solid" },
-    { "id": "s_w", "from": "smss", "to": "winlogon", "label": "spawn", "color": "#34d399", "style": "solid" },
-    { "id": "w_dk", "from": "winlogon", "to": "desktop", "label": "login", "color": "#34d399", "style": "solid" }
+    {
+      "id": "p_u",
+      "from": "power",
+      "to": "uefi",
+      "label": "POST",
+      "color": "#7dd3fc",
+      "style": "solid"
+    },
+    {
+      "id": "u_b",
+      "from": "uefi",
+      "to": "boot",
+      "label": "find ESP",
+      "color": "#7dd3fc",
+      "style": "solid"
+    },
+    {
+      "id": "b_l",
+      "from": "boot",
+      "to": "loader",
+      "label": "read BCD",
+      "color": "#7dd3fc",
+      "style": "solid"
+    },
+    {
+      "id": "l_k",
+      "from": "loader",
+      "to": "kernel",
+      "label": "load kernel",
+      "color": "#7dd3fc",
+      "style": "solid"
+    },
+    {
+      "id": "k_d",
+      "from": "kernel",
+      "to": "drivers",
+      "label": "init",
+      "color": "#fef08a",
+      "style": "dashed"
+    },
+    {
+      "id": "d_s",
+      "from": "drivers",
+      "to": "smss",
+      "label": "start",
+      "color": "#7dd3fc",
+      "style": "solid"
+    },
+    {
+      "id": "s_w",
+      "from": "smss",
+      "to": "winlogon",
+      "label": "spawn",
+      "color": "#34d399",
+      "style": "solid"
+    },
+    {
+      "id": "w_dk",
+      "from": "winlogon",
+      "to": "desktop",
+      "label": "login",
+      "color": "#34d399",
+      "style": "solid"
+    }
   ],
   "timeline": [
-    { "at": 0,   "type": "reveal-node", "target": "power" },
-    { "at": 8,   "type": "reveal-node", "target": "uefi" },
-    { "at": 16,  "type": "reveal-node", "target": "boot" },
-    { "at": 24,  "type": "reveal-node", "target": "loader" },
-    { "at": 32,  "type": "reveal-node", "target": "kernel" },
-    { "at": 40,  "type": "reveal-node", "target": "drivers" },
-    { "at": 48,  "type": "reveal-node", "target": "smss" },
-    { "at": 56,  "type": "reveal-node", "target": "winlogon" },
-    { "at": 64,  "type": "reveal-node", "target": "desktop" },
+    { "at": 0, "type": "reveal-node", "target": "power" },
+    { "at": 8, "type": "reveal-node", "target": "uefi" },
+    { "at": 16, "type": "reveal-node", "target": "boot" },
+    { "at": 24, "type": "reveal-node", "target": "loader" },
+    { "at": 32, "type": "reveal-node", "target": "kernel" },
+    { "at": 40, "type": "reveal-node", "target": "drivers" },
+    { "at": 48, "type": "reveal-node", "target": "smss" },
+    { "at": 56, "type": "reveal-node", "target": "winlogon" },
+    { "at": 64, "type": "reveal-node", "target": "desktop" },
 
-    { "at": 76,  "type": "reveal-edge", "target": "p_u" },
-    { "at": 86,  "type": "reveal-edge", "target": "u_b" },
-    { "at": 96,  "type": "reveal-edge", "target": "b_l" },
+    { "at": 76, "type": "reveal-edge", "target": "p_u" },
+    { "at": 86, "type": "reveal-edge", "target": "u_b" },
+    { "at": 96, "type": "reveal-edge", "target": "b_l" },
     { "at": 106, "type": "reveal-edge", "target": "l_k" },
     { "at": 116, "type": "reveal-edge", "target": "k_d" },
     { "at": 126, "type": "reveal-edge", "target": "d_s" },
     { "at": 136, "type": "reveal-edge", "target": "s_w" },
     { "at": 146, "type": "reveal-edge", "target": "w_dk" },
 
-    { "at": 162, "type": "pulse", "edge": "p_u", "color": "#7dd3fc",
-      "onArrive": { "flash": true, "sfx": "whoosh" } },
-    { "at": 195, "type": "pulse", "edge": "u_b", "color": "#7dd3fc",
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 228, "type": "pulse", "edge": "b_l", "color": "#7dd3fc",
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 261, "type": "pulse", "edge": "l_k", "color": "#7dd3fc",
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 294, "type": "pulse", "edge": "k_d", "color": "#fef08a", "speed": 0.9,
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 330, "type": "pulse", "edge": "d_s", "color": "#7dd3fc",
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 363, "type": "pulse", "edge": "s_w", "color": "#34d399",
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 396, "type": "pulse", "edge": "w_dk", "color": "#34d399",
-      "onArrive": { "flash": true, "sfx": "ding" } }
+    {
+      "at": 162,
+      "type": "pulse",
+      "edge": "p_u",
+      "color": "#7dd3fc",
+      "onArrive": { "flash": true, "sfx": "whoosh" }
+    },
+    {
+      "at": 195,
+      "type": "pulse",
+      "edge": "u_b",
+      "color": "#7dd3fc",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 228,
+      "type": "pulse",
+      "edge": "b_l",
+      "color": "#7dd3fc",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 261,
+      "type": "pulse",
+      "edge": "l_k",
+      "color": "#7dd3fc",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 294,
+      "type": "pulse",
+      "edge": "k_d",
+      "color": "#fef08a",
+      "speed": 0.9,
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 330,
+      "type": "pulse",
+      "edge": "d_s",
+      "color": "#7dd3fc",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 363,
+      "type": "pulse",
+      "edge": "s_w",
+      "color": "#34d399",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 396,
+      "type": "pulse",
+      "edge": "w_dk",
+      "color": "#34d399",
+      "onArrive": { "flash": true, "sfx": "ding" }
+    }
   ]
 }

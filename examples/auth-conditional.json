@@ -1,5 +1,11 @@
 {
-  "meta": { "title": "Auth Conditional Flow", "fps": 30, "width": 1920, "height": 1080, "mode": "video" },
+  "meta": {
+    "title": "Auth Conditional Flow",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "mode": "video"
+  },
   "nodes": [
     { "id": "user", "label": "User", "shape": "rect", "icon": "user" },
     { "id": "gw", "label": "Gateway", "shape": "rect", "icon": "globe" },
@@ -16,34 +22,70 @@
     { "id": "svc_db", "from": "svc", "to": "db", "label": "read" }
   ],
   "timeline": [
-    { "at": 0,   "type": "reveal-node", "target": "user" },
-    { "at": 8,   "type": "reveal-node", "target": "gw" },
-    { "at": 16,  "type": "reveal-node", "target": "auth" },
-    { "at": 24,  "type": "reveal-node", "target": "svc" },
-    { "at": 30,  "type": "reveal-node", "target": "db" },
-    { "at": 36,  "type": "reveal-node", "target": "deny" },
+    { "at": 0, "type": "reveal-node", "target": "user" },
+    { "at": 8, "type": "reveal-node", "target": "gw" },
+    { "at": 16, "type": "reveal-node", "target": "auth" },
+    { "at": 24, "type": "reveal-node", "target": "svc" },
+    { "at": 30, "type": "reveal-node", "target": "db" },
+    { "at": 36, "type": "reveal-node", "target": "deny" },
 
-    { "at": 46,  "type": "reveal-edge", "target": "u_gw" },
-    { "at": 58,  "type": "reveal-edge", "target": "gw_auth" },
-    { "at": 68,  "type": "reveal-edge", "target": "auth_svc" },
-    { "at": 76,  "type": "reveal-edge", "target": "auth_deny" },
-    { "at": 84,  "type": "reveal-edge", "target": "svc_db" },
+    { "at": 46, "type": "reveal-edge", "target": "u_gw" },
+    { "at": 58, "type": "reveal-edge", "target": "gw_auth" },
+    { "at": 68, "type": "reveal-edge", "target": "auth_svc" },
+    { "at": 76, "type": "reveal-edge", "target": "auth_deny" },
+    { "at": 84, "type": "reveal-edge", "target": "svc_db" },
 
-    { "at": 100, "type": "pulse", "edge": "u_gw", "color": "#38bdf8",
-      "onArrive": { "flash": true, "sfx": "whoosh" } },
-    { "at": 132, "type": "pulse", "edge": "gw_auth", "color": "#38bdf8",
-      "onArrive": { "flash": true, "sfx": "beep" } },
+    {
+      "at": 100,
+      "type": "pulse",
+      "edge": "u_gw",
+      "color": "#38bdf8",
+      "onArrive": { "flash": true, "sfx": "whoosh" }
+    },
+    {
+      "at": 132,
+      "type": "pulse",
+      "edge": "gw_auth",
+      "color": "#38bdf8",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
 
-    { "at": 170, "type": "pulse", "edge": "auth_svc", "color": "#34d399",
-      "onArrive": { "flash": true, "sfx": "ding" } },
-    { "at": 205, "type": "pulse", "edge": "svc_db", "color": "#34d399",
-      "onArrive": { "flash": true, "sfx": "ding" } },
-    { "at": 245, "type": "pulse", "edge": "svc_db", "color": "#22d3ee", "speed": 1.4,
-      "onArrive": { "flash": true } },
+    {
+      "at": 170,
+      "type": "pulse",
+      "edge": "auth_svc",
+      "color": "#34d399",
+      "onArrive": { "flash": true, "sfx": "ding" }
+    },
+    {
+      "at": 205,
+      "type": "pulse",
+      "edge": "svc_db",
+      "color": "#34d399",
+      "onArrive": { "flash": true, "sfx": "ding" }
+    },
+    {
+      "at": 245,
+      "type": "pulse",
+      "edge": "svc_db",
+      "color": "#22d3ee",
+      "speed": 1.4,
+      "onArrive": { "flash": true }
+    },
 
-    { "at": 300, "type": "pulse", "edge": "gw_auth", "color": "#f59e0b",
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 335, "type": "pulse", "edge": "auth_deny", "color": "#f43f5e",
-      "onArrive": { "flash": true, "sfx": "ding" } }
+    {
+      "at": 300,
+      "type": "pulse",
+      "edge": "gw_auth",
+      "color": "#f59e0b",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 335,
+      "type": "pulse",
+      "edge": "auth_deny",
+      "color": "#f43f5e",
+      "onArrive": { "flash": true, "sfx": "ding" }
+    }
   ]
 }

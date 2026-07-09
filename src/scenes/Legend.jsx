@@ -10,7 +10,8 @@ export function Legend({ items = [], theme, appearFrame = 0, x = 40, y = 40 }) {
   const frame = useCurrentFrame();
   const local = frame - appearFrame;
   if (!items.length) return null;
-  const opacity = local < 0 ? 0 : interpolate(local, [0, 16], [0, 1], { extrapolateRight: "clamp" });
+  const opacity =
+    local < 0 ? 0 : interpolate(local, [0, 16], [0, 1], { extrapolateRight: "clamp" });
 
   const rowH = 30;
   const boxW = 240;
@@ -21,7 +22,16 @@ export function Legend({ items = [], theme, appearFrame = 0, x = 40, y = 40 }) {
 
   return (
     <g opacity={opacity} transform={`translate(${x} ${y})`}>
-      <rect x={0} y={0} width={boxW} height={boxH} rx={12} fill={bg} fillOpacity={0.92} stroke={stroke} />
+      <rect
+        x={0}
+        y={0}
+        width={boxW}
+        height={boxH}
+        rx={12}
+        fill={bg}
+        fillOpacity={0.92}
+        stroke={stroke}
+      />
       {items.map((it, i) => {
         const cy = 20 + i * rowH;
         const color = it.color || theme?.edge || "#64748b";
@@ -38,7 +48,14 @@ export function Legend({ items = [], theme, appearFrame = 0, x = 40, y = 40 }) {
               strokeDasharray={dashArr || undefined}
               strokeLinecap={it.style === "dotted" ? "round" : "butt"}
             />
-            <text x={68} y={cy} fill={txt} fontSize={15} fontFamily="Inter, system-ui, sans-serif" dominantBaseline="central">
+            <text
+              x={68}
+              y={cy}
+              fill={txt}
+              fontSize={15}
+              fontFamily="Inter, system-ui, sans-serif"
+              dominantBaseline="central"
+            >
               {it.label}
             </text>
           </g>

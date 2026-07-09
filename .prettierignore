@@ -1,0 +1,7 @@
+node_modules
+output
+public/sfx
+*.mp4
+*.gif
+*.webp
+package-lock.json

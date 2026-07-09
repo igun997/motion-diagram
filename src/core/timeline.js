@@ -9,10 +9,10 @@ export function normalizeTimeline(events, fps) {
       e.durationInFrames != null
         ? e.durationInFrames
         : e.durationSec != null
-        ? Math.round(e.durationSec * fps)
-        : e.type === "pulse"
-        ? Math.round(PULSE_DEFAULT_FRAMES / (e.speed || 1))
-        : 18;
+          ? Math.round(e.durationSec * fps)
+          : e.type === "pulse"
+            ? Math.round(PULSE_DEFAULT_FRAMES / (e.speed || 1))
+            : 18;
     return { ...e, at, durationInFrames: dur, _i: i };
   });
 

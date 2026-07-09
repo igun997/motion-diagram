@@ -14,8 +14,8 @@
     { "id": "e4", "from": "auth", "to": "err", "label": "no" }
   ],
   "timeline": [
-    { "at": 0,  "type": "reveal-node", "target": "client" },
-    { "at": 8,  "type": "reveal-node", "target": "api" },
+    { "at": 0, "type": "reveal-node", "target": "client" },
+    { "at": 8, "type": "reveal-node", "target": "api" },
     { "at": 16, "type": "reveal-node", "target": "auth" },
     { "at": 24, "type": "reveal-node", "target": "db" },
     { "at": 32, "type": "reveal-node", "target": "err" },
@@ -23,8 +23,29 @@
     { "at": 58, "type": "reveal-edge", "target": "e2" },
     { "at": 76, "type": "reveal-edge", "target": "e3" },
     { "at": 94, "type": "reveal-edge", "target": "e4" },
-    { "at": 120, "type": "pulse", "edge": "e1", "color": "#38bdf8", "sfx": "whoosh", "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 155, "type": "pulse", "edge": "e2", "color": "#a78bfa", "sfx": "whoosh", "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 190, "type": "pulse", "edge": "e3", "color": "#34d399", "sfx": "whoosh", "onArrive": { "flash": true, "sfx": "ding" } }
+    {
+      "at": 120,
+      "type": "pulse",
+      "edge": "e1",
+      "color": "#38bdf8",
+      "sfx": "whoosh",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 155,
+      "type": "pulse",
+      "edge": "e2",
+      "color": "#a78bfa",
+      "sfx": "whoosh",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 190,
+      "type": "pulse",
+      "edge": "e3",
+      "color": "#34d399",
+      "sfx": "whoosh",
+      "onArrive": { "flash": true, "sfx": "ding" }
+    }
   ]
 }

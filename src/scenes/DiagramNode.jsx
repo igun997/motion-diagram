@@ -68,7 +68,14 @@ export function DiagramNode({ node, frame, fps, appearFrame, theme }) {
       {icon && (
         <g transform={`translate(${cx - width / 2 + 26} ${cy})`}>
           {icon.kind === "path" ? (
-            <g transform="translate(-11 -11) scale(0.92)" stroke={c.stroke} strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <g
+              transform="translate(-11 -11) scale(0.92)"
+              stroke={c.stroke}
+              strokeWidth={2}
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d={icon.d} />
             </g>
           ) : (

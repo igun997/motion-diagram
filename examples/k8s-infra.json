@@ -1,5 +1,11 @@
 {
-  "meta": { "title": "Kubernetes Production Cluster", "fps": 30, "width": 1920, "height": 1080, "theme": "light" },
+  "meta": {
+    "title": "Kubernetes Production Cluster",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "theme": "light"
+  },
   "legend": [
     { "label": "Ingress traffic", "color": "#0284c7", "style": "solid" },
     { "label": "Service call", "color": "#7c3aed", "style": "solid" },
@@ -18,51 +24,184 @@
 
     { "id": "orders", "label": "Orders Svc", "shape": "rect", "icon": "server", "group": "svc" },
     { "id": "users", "label": "Users Svc", "shape": "rect", "icon": "server", "group": "svc" },
-    { "id": "payments", "label": "Payments Svc", "shape": "rect", "icon": "server", "group": "svc" },
+    {
+      "id": "payments",
+      "label": "Payments Svc",
+      "shape": "rect",
+      "icon": "server",
+      "group": "svc"
+    },
 
-    { "id": "redis1", "label": "Redis Orders", "shape": "stadium", "icon": "cache", "group": "cache" },
-    { "id": "redis2", "label": "Redis Users", "shape": "stadium", "icon": "cache", "group": "cache" },
-    { "id": "redis3", "label": "Redis Session", "shape": "stadium", "iconText": "⚡", "group": "cache" },
+    {
+      "id": "redis1",
+      "label": "Redis Orders",
+      "shape": "stadium",
+      "icon": "cache",
+      "group": "cache"
+    },
+    {
+      "id": "redis2",
+      "label": "Redis Users",
+      "shape": "stadium",
+      "icon": "cache",
+      "group": "cache"
+    },
+    {
+      "id": "redis3",
+      "label": "Redis Session",
+      "shape": "stadium",
+      "iconText": "⚡",
+      "group": "cache"
+    },
 
-    { "id": "master", "label": "PG Master", "shape": "stadium", "icon": "database", "group": "data" },
-    { "id": "slave1", "label": "PG Slave 1", "shape": "stadium", "icon": "database", "group": "data" },
-    { "id": "slave2", "label": "PG Slave 2", "shape": "stadium", "icon": "database", "group": "data" }
+    {
+      "id": "master",
+      "label": "PG Master",
+      "shape": "stadium",
+      "icon": "database",
+      "group": "data"
+    },
+    {
+      "id": "slave1",
+      "label": "PG Slave 1",
+      "shape": "stadium",
+      "icon": "database",
+      "group": "data"
+    },
+    {
+      "id": "slave2",
+      "label": "PG Slave 2",
+      "shape": "stadium",
+      "icon": "database",
+      "group": "data"
+    }
   ],
   "edges": [
-    { "id": "lb_ing", "from": "lb", "to": "ingress", "label": "route", "color": "#0284c7", "style": "solid" },
-    { "id": "ing_orders", "from": "ingress", "to": "orders", "label": "/orders", "color": "#0284c7", "style": "solid" },
-    { "id": "ing_users", "from": "ingress", "to": "users", "label": "/users", "color": "#0284c7", "style": "solid" },
-    { "id": "ing_pay", "from": "ingress", "to": "payments", "label": "/pay", "color": "#0284c7", "style": "solid" },
+    {
+      "id": "lb_ing",
+      "from": "lb",
+      "to": "ingress",
+      "label": "route",
+      "color": "#0284c7",
+      "style": "solid"
+    },
+    {
+      "id": "ing_orders",
+      "from": "ingress",
+      "to": "orders",
+      "label": "/orders",
+      "color": "#0284c7",
+      "style": "solid"
+    },
+    {
+      "id": "ing_users",
+      "from": "ingress",
+      "to": "users",
+      "label": "/users",
+      "color": "#0284c7",
+      "style": "solid"
+    },
+    {
+      "id": "ing_pay",
+      "from": "ingress",
+      "to": "payments",
+      "label": "/pay",
+      "color": "#0284c7",
+      "style": "solid"
+    },
 
-    { "id": "orders_pay", "from": "orders", "to": "payments", "label": "charge", "color": "#7c3aed", "style": "solid" },
+    {
+      "id": "orders_pay",
+      "from": "orders",
+      "to": "payments",
+      "label": "charge",
+      "color": "#7c3aed",
+      "style": "solid"
+    },
 
-    { "id": "orders_r1", "from": "orders", "to": "redis1", "label": "cache", "color": "#ea580c", "style": "dotted" },
-    { "id": "users_r2", "from": "users", "to": "redis2", "label": "cache", "color": "#ea580c", "style": "dotted" },
-    { "id": "pay_r3", "from": "payments", "to": "redis3", "label": "session", "color": "#ea580c", "style": "dotted" },
+    {
+      "id": "orders_r1",
+      "from": "orders",
+      "to": "redis1",
+      "label": "cache",
+      "color": "#ea580c",
+      "style": "dotted"
+    },
+    {
+      "id": "users_r2",
+      "from": "users",
+      "to": "redis2",
+      "label": "cache",
+      "color": "#ea580c",
+      "style": "dotted"
+    },
+    {
+      "id": "pay_r3",
+      "from": "payments",
+      "to": "redis3",
+      "label": "session",
+      "color": "#ea580c",
+      "style": "dotted"
+    },
 
-    { "id": "orders_m", "from": "orders", "to": "master", "label": "write", "color": "#7c3aed", "style": "solid" },
-    { "id": "users_m", "from": "users", "to": "master", "label": "write", "color": "#7c3aed", "style": "solid" },
-    { "id": "pay_m", "from": "payments", "to": "master", "label": "write", "color": "#7c3aed", "style": "solid" },
+    {
+      "id": "orders_m",
+      "from": "orders",
+      "to": "master",
+      "label": "write",
+      "color": "#7c3aed",
+      "style": "solid"
+    },
+    {
+      "id": "users_m",
+      "from": "users",
+      "to": "master",
+      "label": "write",
+      "color": "#7c3aed",
+      "style": "solid"
+    },
+    {
+      "id": "pay_m",
+      "from": "payments",
+      "to": "master",
+      "label": "write",
+      "color": "#7c3aed",
+      "style": "solid"
+    },
 
-    { "id": "m_s1", "from": "master", "to": "slave1", "label": "replicate", "color": "#16a34a", "style": "dashed" },
-    { "id": "m_s2", "from": "master", "to": "slave2", "label": "replicate", "color": "#16a34a", "style": "dashed" }
+    {
+      "id": "m_s1",
+      "from": "master",
+      "to": "slave1",
+      "label": "replicate",
+      "color": "#16a34a",
+      "style": "dashed"
+    },
+    {
+      "id": "m_s2",
+      "from": "master",
+      "to": "slave2",
+      "label": "replicate",
+      "color": "#16a34a",
+      "style": "dashed"
+    }
   ],
   "timeline": [
-    { "at": 0,   "type": "reveal-node", "target": "lb" },
-    { "at": 8,   "type": "reveal-node", "target": "ingress" },
-    { "at": 16,  "type": "reveal-node", "target": "orders" },
-    { "at": 22,  "type": "reveal-node", "target": "users" },
-    { "at": 28,  "type": "reveal-node", "target": "payments" },
-    { "at": 36,  "type": "reveal-node", "target": "redis1" },
-    { "at": 42,  "type": "reveal-node", "target": "redis2" },
-    { "at": 48,  "type": "reveal-node", "target": "redis3" },
-    { "at": 56,  "type": "reveal-node", "target": "master" },
-    { "at": 62,  "type": "reveal-node", "target": "slave1" },
-    { "at": 68,  "type": "reveal-node", "target": "slave2" },
+    { "at": 0, "type": "reveal-node", "target": "lb" },
+    { "at": 8, "type": "reveal-node", "target": "ingress" },
+    { "at": 16, "type": "reveal-node", "target": "orders" },
+    { "at": 22, "type": "reveal-node", "target": "users" },
+    { "at": 28, "type": "reveal-node", "target": "payments" },
+    { "at": 36, "type": "reveal-node", "target": "redis1" },
+    { "at": 42, "type": "reveal-node", "target": "redis2" },
+    { "at": 48, "type": "reveal-node", "target": "redis3" },
+    { "at": 56, "type": "reveal-node", "target": "master" },
+    { "at": 62, "type": "reveal-node", "target": "slave1" },
+    { "at": 68, "type": "reveal-node", "target": "slave2" },
 
-    { "at": 80,  "type": "reveal-edge", "target": "lb_ing" },
-    { "at": 88,  "type": "reveal-edge", "target": "ing_orders" },
-    { "at": 94,  "type": "reveal-edge", "target": "ing_users" },
+    { "at": 80, "type": "reveal-edge", "target": "lb_ing" },
+    { "at": 88, "type": "reveal-edge", "target": "ing_orders" },
+    { "at": 94, "type": "reveal-edge", "target": "ing_users" },
     { "at": 100, "type": "reveal-edge", "target": "ing_pay" },
     { "at": 106, "type": "reveal-edge", "target": "orders_pay" },
     { "at": 112, "type": "reveal-edge", "target": "orders_r1" },
@@ -74,35 +213,103 @@
     { "at": 148, "type": "reveal-edge", "target": "m_s1" },
     { "at": 154, "type": "reveal-edge", "target": "m_s2" },
 
-    { "at": 170, "type": "pulse", "edge": "lb_ing", "color": "#0284c7",
-      "onArrive": { "flash": true, "sfx": "whoosh" } },
-    { "at": 200, "type": "pulse", "edge": "ing_orders", "color": "#0284c7",
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 205, "type": "pulse", "edge": "ing_users", "color": "#0284c7",
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 210, "type": "pulse", "edge": "ing_pay", "color": "#0284c7",
-      "onArrive": { "flash": true, "sfx": "beep" } },
+    {
+      "at": 170,
+      "type": "pulse",
+      "edge": "lb_ing",
+      "color": "#0284c7",
+      "onArrive": { "flash": true, "sfx": "whoosh" }
+    },
+    {
+      "at": 200,
+      "type": "pulse",
+      "edge": "ing_orders",
+      "color": "#0284c7",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 205,
+      "type": "pulse",
+      "edge": "ing_users",
+      "color": "#0284c7",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 210,
+      "type": "pulse",
+      "edge": "ing_pay",
+      "color": "#0284c7",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
 
-    { "at": 240, "type": "pulse", "edge": "orders_r1", "color": "#ea580c", "speed": 1.4,
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 245, "type": "pulse", "edge": "users_r2", "color": "#ea580c", "speed": 1.4,
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 250, "type": "pulse", "edge": "pay_r3", "color": "#ea580c", "speed": 1.4,
-      "onArrive": { "flash": true, "sfx": "beep" } },
+    {
+      "at": 240,
+      "type": "pulse",
+      "edge": "orders_r1",
+      "color": "#ea580c",
+      "speed": 1.4,
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 245,
+      "type": "pulse",
+      "edge": "users_r2",
+      "color": "#ea580c",
+      "speed": 1.4,
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 250,
+      "type": "pulse",
+      "edge": "pay_r3",
+      "color": "#ea580c",
+      "speed": 1.4,
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
 
-    { "at": 275, "type": "pulse", "edge": "orders_pay", "color": "#7c3aed",
-      "onArrive": { "flash": true, "sfx": "beep" } },
+    {
+      "at": 275,
+      "type": "pulse",
+      "edge": "orders_pay",
+      "color": "#7c3aed",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
 
-    { "at": 305, "type": "pulse", "edge": "orders_m", "color": "#7c3aed",
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 310, "type": "pulse", "edge": "users_m", "color": "#7c3aed",
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 315, "type": "pulse", "edge": "pay_m", "color": "#7c3aed",
-      "onArrive": { "flash": true, "sfx": "beep" } },
+    {
+      "at": 305,
+      "type": "pulse",
+      "edge": "orders_m",
+      "color": "#7c3aed",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 310,
+      "type": "pulse",
+      "edge": "users_m",
+      "color": "#7c3aed",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 315,
+      "type": "pulse",
+      "edge": "pay_m",
+      "color": "#7c3aed",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
 
-    { "at": 345, "type": "pulse", "edge": "m_s1", "color": "#16a34a",
-      "onArrive": { "flash": true, "sfx": "ding" } },
-    { "at": 350, "type": "pulse", "edge": "m_s2", "color": "#16a34a",
-      "onArrive": { "flash": true, "sfx": "ding" } }
+    {
+      "at": 345,
+      "type": "pulse",
+      "edge": "m_s1",
+      "color": "#16a34a",
+      "onArrive": { "flash": true, "sfx": "ding" }
+    },
+    {
+      "at": 350,
+      "type": "pulse",
+      "edge": "m_s2",
+      "color": "#16a34a",
+      "onArrive": { "flash": true, "sfx": "ding" }
+    }
   ]
 }

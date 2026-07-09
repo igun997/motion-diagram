@@ -9,10 +9,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import {
-  CallToolRequestSchema,
-  ListToolsRequestSchema,
-} from "@modelcontextprotocol/sdk/types.js";
+import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { renderVideo } from "../render/renderVideo.js";
 import { renderCarousel } from "../render/renderCarousel.js";
 
@@ -69,7 +66,10 @@ const sceneSchema = {
         properties: {
           at: { type: "number" },
           atSec: { type: "number" },
-          type: { type: "string", enum: ["pulse", "reveal-node", "reveal-edge", "flash", "camera"] },
+          type: {
+            type: "string",
+            enum: ["pulse", "reveal-node", "reveal-edge", "flash", "camera"],
+          },
           target: { type: "string" },
           edge: { type: "string" },
           color: { type: "string" },
@@ -110,7 +110,10 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         required: ["scene"],
         properties: {
           scene: sceneSchema,
-          filename: { type: "string", description: "Output filename (e.g. login-flow.mp4). Optional." },
+          filename: {
+            type: "string",
+            description: "Output filename (e.g. login-flow.mp4). Optional.",
+          },
         },
       },
     },
@@ -141,7 +144,9 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
   const { name, arguments: args } = req.params;
   try {
     if (name === "get_scene_schema") {
-      const doc = fs.existsSync(SCHEMA_DOC) ? fs.readFileSync(SCHEMA_DOC, "utf8") : "schema doc missing";
+      const doc = fs.existsSync(SCHEMA_DOC)
+        ? fs.readFileSync(SCHEMA_DOC, "utf8")
+        : "schema doc missing";
       return ok(doc);
     }
 
@@ -149,7 +154,9 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
       const scene = args.scene;
       if (!scene || !scene.nodes) return fail("Missing scene.nodes");
       fs.mkdirSync(OUT_DIR, { recursive: true });
-      const file = args.filename || `${(scene.meta?.title || "diagram").replace(/\W+/g, "-").toLowerCase()}.mp4`;
+      const file =
+        args.filename ||
+        `${(scene.meta?.title || "diagram").replace(/\W+/g, "-").toLowerCase()}.mp4`;
       const outPath = path.join(OUT_DIR, file.endsWith(".mp4") ? file : file + ".mp4");
       await renderVideo(scene, outPath);
       return ok(`Rendered MP4: ${outPath}`);

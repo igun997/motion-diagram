@@ -10,18 +10,24 @@ export function ProcessRing({ node, frame, startFrame, durationInFrames = 40, co
   const r = Math.max(node.width, node.height) / 2 + 14;
   const rot = (local / durationInFrames) * 720; // 2 full turns
   // fade in first 6 frames, out last 6
-  const opacity = interpolate(
-    local,
-    [0, 6, durationInFrames - 6, durationInFrames],
-    [0, 1, 1, 0],
-    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-  );
+  const opacity = interpolate(local, [0, 6, durationInFrames - 6, durationInFrames], [0, 1, 1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
   const circ = 2 * Math.PI * r;
 
   return (
     <g opacity={opacity} transform={`rotate(${rot} ${node.x} ${node.y})`}>
       {/* faint track */}
-      <circle cx={node.x} cy={node.y} r={r} fill="none" stroke={color} strokeOpacity={0.18} strokeWidth={3} />
+      <circle
+        cx={node.x}
+        cy={node.y}
+        r={r}
+        fill="none"
+        stroke={color}
+        strokeOpacity={0.18}
+        strokeWidth={3}
+      />
       {/* moving arc (~30% of circle) */}
       <circle
         cx={node.x}
