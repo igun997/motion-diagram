@@ -125,11 +125,11 @@ npx motion-diagram install-skill --client pi
 
 This writes a `motion-diagram` entry into each agent's MCP config:
 
-| Agent  | Config file |
-| ------ | ----------- |
-| Cursor | `~/.cursor/mcp.json` |
+| Agent          | Config file                                    |
+| -------------- | ---------------------------------------------- |
+| Cursor         | `~/.cursor/mcp.json`                           |
 | Claude Desktop | `claude_desktop_config.json` (OS-specific dir) |
-| Pi     | `~/.pi/agent/mcp.json` |
+| Pi             | `~/.pi/agent/mcp.json`                         |
 
 Installing the npm package also runs this automatically (`postinstall`), so a
 plain `npm install -g motion-diagram` registers the skill for any detected agent.
