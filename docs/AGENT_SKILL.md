@@ -74,6 +74,20 @@ minimal. Tweak any color via `meta.themeOverrides`.
 ## Canvas size / mobile
 - Landscape default `1920x1080`. For mobile/reels set portrait
   `width:1080, height:1920`. Keep flows vertical (top→bottom) so they fit.
+- Prefer a `meta.preset` over raw dims: `instagram-reels`, `instagram-story`,
+  `instagram-post`, `instagram-portrait`, `tiktok`, `youtube`, `youtube-shorts`,
+  `threads`, `whatsapp`, `whatsapp-status`, `twitter`, `landscape`.
+
+## Zoom-follow camera (complex flows on small screens)
+- Set `meta.camera:"follow"` (+ optional `meta.cameraZoom`, default 1.9). Camera
+  shows the whole diagram during reveals, then auto zooms into each pulse as it
+  fires, with eased transitions. Ideal for tall reels with many nodes.
+- Leave as `"fit"` (default) for small diagrams that fit on screen.
+
+## Process animation (a node is "working")
+- Emit `{ "type":"process", "target":"nodeId", "at":N, "durationInFrames":50,
+  "color":"#a78bfa" }` to spin a ring around a node while it does work
+  (DB query, camera open, computation). Overlap it with the pulses it triggers.
 
 ## Carousel
 - Set `group` on nodes to split into slides (one slide per group).

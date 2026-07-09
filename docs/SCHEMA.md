@@ -12,7 +12,10 @@ AI Agent emits this JSON. Renderer executes it. Agent = brain, renderer = execut
     "width": 1920,
     "height": 1080,
     "mode": "video",         // "video" | "carousel"
-    "theme": "dark"          // dark | light | midnight | blueprint | mono
+    "preset": "instagram-reels", // optional; sets w/h/fps (see Size presets)
+    "theme": "dark",         // dark | light | midnight | blueprint | mono
+    "camera": "fit",         // "fit" (default) | "follow" (auto zoom-track pulses)
+    "cameraZoom": 1.8        // follow-mode zoom factor (default 1.9)
     // optional: "themeOverrides": { "background": "...", "nodeText": "...", "shapes": {...} }
   },
   "groups": [ /* Group[]  optional, draws process boxes */ ],
@@ -83,7 +86,7 @@ Drives all motion. `at` = frame offset (or seconds if `atSec`).
 ```jsonc
 {
   "at": 0,                    // frame; or "atSec": 1.5
-  "type": "pulse",            // pulse | reveal-node | reveal-edge | flash | camera
+  "type": "pulse",            // pulse | reveal-node | reveal-edge | flash | process | camera
   // --- pulse ---
   "edge": "e1",
   "color": "#38bdf8",
@@ -91,8 +94,10 @@ Drives all motion. `at` = frame offset (or seconds if `atSec`).
   "reverse": false,           // true = travel to->from (response/return pulse)
   "trail": true,              // comet trail
   "onArrive": { "flash": true, "sfx": "beep" },
-  // --- reveal-node / reveal-edge ---
+  // --- reveal-node / reveal-edge / process ---
   "target": "api",
+  // --- process (spinning 'working' ring around a node) ---
+  // "type":"process", "target":"api", "durationInFrames":50, "color":"#a78bfa"
   // --- camera ---
   "focus": "api",             // node id or "fit"
   "zoom": 1.4,
