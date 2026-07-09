@@ -7,7 +7,7 @@ import { renderCarousel } from "../render/renderCarousel.js";
 
 function parseArgs(argv) {
   const [cmd, file, ...rest] = argv;
-  const opts = { mode: "video", out: null };
+  const opts = { mode: null, out: null };
   for (let i = 0; i < rest.length; i++) {
     const a = rest[i];
     if (a === "--mode") opts.mode = rest[++i];
@@ -31,7 +31,7 @@ async function main() {
   }
   const scene = JSON.parse(fs.readFileSync(scenePath, "utf8"));
 
-  const mode = scene.meta?.mode || opts.mode;
+  const mode = opts.mode || scene.meta?.mode || "video";
   const out = opts.out || `output/${path.basename(file, path.extname(file))}.mp4`;
   fs.mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
 

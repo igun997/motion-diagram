@@ -1,0 +1,60 @@
+{
+  "meta": { "title": "Load Balancer Flow", "fps": 30, "width": 1920, "height": 1080, "mode": "video" },
+  "nodes": [
+    { "id": "client", "label": "Clients", "shape": "rect", "icon": "user" },
+    { "id": "lb", "label": "Load Balancer", "shape": "diamond", "icon": "bolt" },
+    { "id": "s1", "label": "Server 1", "shape": "rect", "icon": "server" },
+    { "id": "s2", "label": "Server 2", "shape": "rect", "icon": "server" },
+    { "id": "s3", "label": "Server 3", "shape": "rect", "icon": "server" },
+    { "id": "cache", "label": "Cache", "shape": "stadium", "icon": "cache" },
+    { "id": "db", "label": "Database", "shape": "stadium", "icon": "database" }
+  ],
+  "edges": [
+    { "id": "c_lb", "from": "client", "to": "lb", "label": "requests" },
+    { "id": "lb_s1", "from": "lb", "to": "s1", "label": "route" },
+    { "id": "lb_s2", "from": "lb", "to": "s2", "label": "route" },
+    { "id": "lb_s3", "from": "lb", "to": "s3", "label": "route" },
+    { "id": "s1_cache", "from": "s1", "to": "cache", "label": "read" },
+    { "id": "s2_cache", "from": "s2", "to": "cache", "label": "read" },
+    { "id": "s3_db", "from": "s3", "to": "db", "label": "query" }
+  ],
+  "timeline": [
+    { "at": 0,   "type": "reveal-node", "target": "client" },
+    { "at": 8,   "type": "reveal-node", "target": "lb" },
+    { "at": 16,  "type": "reveal-node", "target": "s1" },
+    { "at": 22,  "type": "reveal-node", "target": "s2" },
+    { "at": 28,  "type": "reveal-node", "target": "s3" },
+    { "at": 36,  "type": "reveal-node", "target": "cache" },
+    { "at": 42,  "type": "reveal-node", "target": "db" },
+
+    { "at": 50,  "type": "reveal-edge", "target": "c_lb" },
+    { "at": 62,  "type": "reveal-edge", "target": "lb_s1" },
+    { "at": 68,  "type": "reveal-edge", "target": "lb_s2" },
+    { "at": 74,  "type": "reveal-edge", "target": "lb_s3" },
+    { "at": 82,  "type": "reveal-edge", "target": "s1_cache" },
+    { "at": 88,  "type": "reveal-edge", "target": "s2_cache" },
+    { "at": 94,  "type": "reveal-edge", "target": "s3_db" },
+
+    { "at": 110, "type": "pulse", "edge": "c_lb", "color": "#38bdf8", "speed": 1,
+      "onArrive": { "flash": true, "sfx": "whoosh" } },
+
+    { "at": 145, "type": "pulse", "edge": "lb_s1", "color": "#34d399", "speed": 1.3,
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 152, "type": "pulse", "edge": "lb_s2", "color": "#34d399", "speed": 1.3,
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 159, "type": "pulse", "edge": "lb_s3", "color": "#34d399", "speed": 1.3,
+      "onArrive": { "flash": true, "sfx": "beep" } },
+
+    { "at": 195, "type": "pulse", "edge": "s1_cache", "color": "#a78bfa", "speed": 1.5,
+      "onArrive": { "flash": true, "sfx": "ding" } },
+    { "at": 200, "type": "pulse", "edge": "s2_cache", "color": "#a78bfa", "speed": 1.5,
+      "onArrive": { "flash": true, "sfx": "ding" } },
+    { "at": 205, "type": "pulse", "edge": "s3_db", "color": "#f59e0b", "speed": 1.5,
+      "onArrive": { "flash": true, "sfx": "ding" } },
+
+    { "at": 250, "type": "pulse", "edge": "c_lb", "color": "#38bdf8", "speed": 1,
+      "onArrive": { "flash": true } },
+    { "at": 285, "type": "pulse", "edge": "lb_s2", "color": "#34d399", "speed": 1.3,
+      "onArrive": { "flash": true, "sfx": "beep" } }
+  ]
+}

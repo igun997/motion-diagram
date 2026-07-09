@@ -52,6 +52,7 @@ async function renderOneGif(serveUrl, scene, outGif, onProgress) {
     outputLocation: outGif,
     inputProps: {},
     envVariables,
+    muted: true,
     everyNthFrame: 2,
     onProgress: ({ progress }) => onProgress && onProgress(progress),
   });
