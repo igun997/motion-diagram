@@ -70,13 +70,27 @@ function useCamera(events, edgeById, frame, bounds, width, height, followMode, f
     if (frame < pulses[0].start - HOLD) return fit;
 
     // find current or upcoming pulse
-    let cur = pulses[0];
-    let prevMid = null;
+    let curIdx = 0;
     for (let i = 0; i < pulses.length; i++) {
-      if (frame >= pulses[i].start - HOLD) {
-        cur = pulses[i];
-        prevMid = i > 0 ? pulses[i - 1].mid : null;
-      }
+      if (frame >= pulses[i].start - HOLD) curIdx = i;
+    }
+    const cur = pulses[curIdx];
+    const prevMid = curIdx > 0 ? pulses[curIdx - 1].mid : null;
+    const isLast = curIdx === pulses.length - 1;
+
+    // after the final pulse ends -> ease back out to fit (show whole diagram)
+    if (isLast && frame >= cur.end) {
+      const from = targetFor(cur.mid);
+      const t = interpolate(frame, [cur.end, cur.end + HOLD], [0, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.inOut(Easing.ease),
+      });
+      return {
+        tx: from.tx + (fit.tx - from.tx) * t,
+        ty: from.ty + (fit.ty - from.ty) * t,
+        scale: from.scale + (fit.scale - from.scale) * t,
+      };
     }
 
     const to = targetFor(cur.mid);

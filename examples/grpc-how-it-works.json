@@ -1,5 +1,11 @@
 {
-  "meta": { "title": "How gRPC Works", "preset": "instagram-reels", "theme": "midnight", "camera": "follow", "cameraZoom": 1.8 },
+  "meta": {
+    "title": "How gRPC Works",
+    "preset": "instagram-reels",
+    "theme": "midnight",
+    "camera": "follow",
+    "cameraZoom": 1.8
+  },
   "legend": [
     { "label": "Request (protobuf)", "color": "#38bdf8", "style": "solid" },
     { "label": "HTTP/2 stream", "color": "#f59e0b", "style": "dashed" },
@@ -13,60 +19,173 @@
   "nodes": [
     { "id": "app", "label": "Client App", "shape": "stadium", "iconText": "📱", "group": "client" },
     { "id": "stub", "label": "Stub (.proto)", "shape": "rect", "icon": "bolt", "group": "client" },
-    { "id": "enc", "label": "Protobuf Encode", "shape": "rect", "iconText": "🧬", "group": "client" },
+    {
+      "id": "enc",
+      "label": "Protobuf Encode",
+      "shape": "rect",
+      "iconText": "🧬",
+      "group": "client"
+    },
 
-    { "id": "channel", "label": "HTTP/2 Channel", "shape": "rect", "iconText": "🔗", "group": "wire" },
+    {
+      "id": "channel",
+      "label": "HTTP/2 Channel",
+      "shape": "rect",
+      "iconText": "🔗",
+      "group": "wire"
+    },
 
     { "id": "srv", "label": "gRPC Server", "shape": "rect", "icon": "server", "group": "server" },
     { "id": "svc", "label": "Service Handler", "shape": "rect", "icon": "gear", "group": "server" },
-    { "id": "store", "label": "Data Store", "shape": "stadium", "icon": "database", "group": "server" }
+    {
+      "id": "store",
+      "label": "Data Store",
+      "shape": "stadium",
+      "icon": "database",
+      "group": "server"
+    }
   ],
   "edges": [
-    { "id": "app_stub", "from": "app", "to": "stub", "label": "call()", "color": "#38bdf8", "style": "solid" },
-    { "id": "stub_enc", "from": "stub", "to": "enc", "label": "marshal", "color": "#38bdf8", "style": "solid" },
-    { "id": "enc_ch", "from": "enc", "to": "channel", "label": "send frame", "color": "#f59e0b", "style": "dashed" },
-    { "id": "ch_srv", "from": "channel", "to": "srv", "label": "HTTP/2", "color": "#f59e0b", "style": "dashed" },
-    { "id": "srv_svc", "from": "srv", "to": "svc", "label": "dispatch", "color": "#a78bfa", "style": "solid" },
-    { "id": "svc_store", "from": "svc", "to": "store", "label": "read/write", "color": "#a78bfa", "style": "solid" },
-    { "id": "svc_app", "from": "svc", "to": "app", "label": "stream response", "color": "#34d399", "style": "solid" }
+    {
+      "id": "app_stub",
+      "from": "app",
+      "to": "stub",
+      "label": "call()",
+      "color": "#38bdf8",
+      "style": "solid"
+    },
+    {
+      "id": "stub_enc",
+      "from": "stub",
+      "to": "enc",
+      "label": "marshal",
+      "color": "#38bdf8",
+      "style": "solid"
+    },
+    {
+      "id": "enc_ch",
+      "from": "enc",
+      "to": "channel",
+      "label": "send frame",
+      "color": "#f59e0b",
+      "style": "dashed"
+    },
+    {
+      "id": "ch_srv",
+      "from": "channel",
+      "to": "srv",
+      "label": "HTTP/2",
+      "color": "#f59e0b",
+      "style": "dashed"
+    },
+    {
+      "id": "srv_svc",
+      "from": "srv",
+      "to": "svc",
+      "label": "dispatch",
+      "color": "#a78bfa",
+      "style": "solid"
+    },
+    {
+      "id": "svc_store",
+      "from": "svc",
+      "to": "store",
+      "label": "read/write",
+      "color": "#a78bfa",
+      "style": "solid"
+    },
+    {
+      "id": "svc_app",
+      "from": "svc",
+      "to": "app",
+      "label": "stream response",
+      "color": "#34d399",
+      "style": "solid"
+    }
   ],
   "timeline": [
-    { "at": 0,   "type": "reveal-node", "target": "app" },
-    { "at": 8,   "type": "reveal-node", "target": "stub" },
-    { "at": 16,  "type": "reveal-node", "target": "enc" },
-    { "at": 24,  "type": "reveal-node", "target": "channel" },
-    { "at": 32,  "type": "reveal-node", "target": "srv" },
-    { "at": 40,  "type": "reveal-node", "target": "svc" },
-    { "at": 48,  "type": "reveal-node", "target": "store" },
+    { "at": 0, "type": "reveal-node", "target": "app" },
+    { "at": 8, "type": "reveal-node", "target": "stub" },
+    { "at": 16, "type": "reveal-node", "target": "enc" },
+    { "at": 24, "type": "reveal-node", "target": "channel" },
+    { "at": 32, "type": "reveal-node", "target": "srv" },
+    { "at": 40, "type": "reveal-node", "target": "svc" },
+    { "at": 48, "type": "reveal-node", "target": "store" },
 
-    { "at": 60,  "type": "reveal-edge", "target": "app_stub" },
-    { "at": 70,  "type": "reveal-edge", "target": "stub_enc" },
-    { "at": 80,  "type": "reveal-edge", "target": "enc_ch" },
-    { "at": 90,  "type": "reveal-edge", "target": "ch_srv" },
+    { "at": 60, "type": "reveal-edge", "target": "app_stub" },
+    { "at": 70, "type": "reveal-edge", "target": "stub_enc" },
+    { "at": 80, "type": "reveal-edge", "target": "enc_ch" },
+    { "at": 90, "type": "reveal-edge", "target": "ch_srv" },
     { "at": 100, "type": "reveal-edge", "target": "srv_svc" },
     { "at": 110, "type": "reveal-edge", "target": "svc_store" },
     { "at": 120, "type": "reveal-edge", "target": "svc_app" },
 
-    { "at": 136, "type": "pulse", "edge": "app_stub", "color": "#38bdf8",
-      "onArrive": { "flash": true, "sfx": "beep" } },
+    {
+      "at": 136,
+      "type": "pulse",
+      "edge": "app_stub",
+      "color": "#38bdf8",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
     { "at": 168, "type": "process", "target": "enc", "durationInFrames": 44, "color": "#38bdf8" },
-    { "at": 172, "type": "pulse", "edge": "stub_enc", "color": "#38bdf8",
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 210, "type": "pulse", "edge": "enc_ch", "color": "#f59e0b", "speed": 0.9,
-      "onArrive": { "flash": true, "sfx": "whoosh" } },
-    { "at": 248, "type": "pulse", "edge": "ch_srv", "color": "#f59e0b", "speed": 0.9,
-      "onArrive": { "flash": true, "sfx": "whoosh" } },
-    { "at": 288, "type": "pulse", "edge": "srv_svc", "color": "#a78bfa",
-      "onArrive": { "flash": true, "sfx": "beep" } },
+    {
+      "at": 172,
+      "type": "pulse",
+      "edge": "stub_enc",
+      "color": "#38bdf8",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 210,
+      "type": "pulse",
+      "edge": "enc_ch",
+      "color": "#f59e0b",
+      "speed": 0.9,
+      "onArrive": { "flash": true, "sfx": "whoosh" }
+    },
+    {
+      "at": 248,
+      "type": "pulse",
+      "edge": "ch_srv",
+      "color": "#f59e0b",
+      "speed": 0.9,
+      "onArrive": { "flash": true, "sfx": "whoosh" }
+    },
+    {
+      "at": 288,
+      "type": "pulse",
+      "edge": "srv_svc",
+      "color": "#a78bfa",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
 
     { "at": 320, "type": "process", "target": "svc", "durationInFrames": 60, "color": "#a78bfa" },
-    { "at": 330, "type": "pulse", "edge": "svc_store", "color": "#a78bfa",
-      "onArrive": { "flash": true, "sfx": "beep" } },
+    {
+      "at": 330,
+      "type": "pulse",
+      "edge": "svc_store",
+      "color": "#a78bfa",
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
     { "at": 366, "type": "pulse", "edge": "svc_store", "color": "#34d399", "reverse": true },
 
-    { "at": 404, "type": "pulse", "edge": "svc_app", "color": "#34d399", "speed": 0.85, "trail": true,
-      "onArrive": { "flash": true, "sfx": "beep" } },
-    { "at": 448, "type": "pulse", "edge": "svc_app", "color": "#34d399", "speed": 0.85, "trail": true,
-      "onArrive": { "flash": true, "sfx": "ding" } }
+    {
+      "at": 404,
+      "type": "pulse",
+      "edge": "svc_app",
+      "color": "#34d399",
+      "speed": 0.85,
+      "trail": true,
+      "onArrive": { "flash": true, "sfx": "beep" }
+    },
+    {
+      "at": 448,
+      "type": "pulse",
+      "edge": "svc_app",
+      "color": "#34d399",
+      "speed": 0.85,
+      "trail": true,
+      "onArrive": { "flash": true, "sfx": "ding" }
+    }
   ]
 }
