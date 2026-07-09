@@ -4,6 +4,28 @@ All notable changes to this project are documented here. Format based on
 [Keep a Changelog](https://keepachangelog.com/), versioning follows
 [SemVer](https://semver.org/).
 
+## [1.0.3] - 2026-07-09
+
+### Fixed
+
+- **MCP wrote output into the package install dir** (e.g.
+  `.../node_modules/motion-diagram/output/`), where users couldn't find it.
+  Default output now goes to `MOTION_OUT_DIR` or `<cwd>/motion-diagram-output`,
+  never the package location.
+
+### Added
+
+- **Installable `SKILL.md`** (`skills/motion-diagram/`) with agent frontmatter.
+  `install-skill` now also copies it into file-based skill dirs
+  (`~/.pi/agent/skills/`, `~/.claude/skills/`) so agents load the when/how
+  guidance at startup, not only via `get_scene_schema`.
+- **`outDir` parameter** on `render_motion_diagram` and `render_carousel` so the
+  agent can write straight into the user's project/output folder.
+- **`get_scene_schema` now returns the full agent skill** (workflow, sfx,
+  colors, themes, presets, camera) followed by the scene JSON contract —
+  previously it returned only the schema, leaving the agent without the
+  authoring playbook.
+
 ## [1.0.2] - 2026-07-09
 
 ### Fixed
@@ -51,6 +73,7 @@ token` at `<Composition>`. Remotion's bundler excludes `node_modules` from its
   `install-skill` to register the MCP server with Cursor, Claude Desktop, and Pi.
 - CI (lint + prettier) and npm publish-on-release workflows.
 
+[1.0.3]: https://github.com/igun997/motion-diagram/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/igun997/motion-diagram/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/igun997/motion-diagram/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/igun997/motion-diagram/releases/tag/v1.0.0

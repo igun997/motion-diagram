@@ -1,6 +1,6 @@
 {
   "name": "motion-diagram",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Agent-driven animated API/flow diagram renderer (MP4 + carousel) with an MCP server.",
   "main": "src/cli/index.js",
   "scripts": {
@@ -40,6 +40,7 @@
     "examples",
     "public/sfx",
     "scripts",
+    "skills",
     "README.md",
     "LICENSE"
   ],

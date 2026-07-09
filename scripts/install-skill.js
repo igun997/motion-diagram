@@ -4,9 +4,13 @@
 //   node scripts/install-skill.js                 # interactive-ish auto-detect
 //   node scripts/install-skill.js --auto           # only write for detected agents (postinstall)
 //   node scripts/install-skill.js --client cursor  # force a specific client
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir, platform } from "node:os";
 import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const PKG_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const SKILL_SRC = join(PKG_ROOT, "skills", "motion-diagram");
 
 const SERVER_NAME = "motion-diagram";
 const SERVER_ENTRY = {
@@ -73,6 +77,33 @@ function upsertServer(path) {
   return existing ? "updated" : "added";
 }
 
+// Where each client looks for agent skill folders. null = client has no
+// file-based skill dir (skill is delivered via get_scene_schema instead).
+function skillDirFor(client) {
+  const home = homedir();
+  switch (client) {
+    case "pi":
+      return join(home, ".pi", "agent", "skills", "motion-diagram");
+    case "claude":
+      return join(home, ".claude", "skills", "motion-diagram");
+    default:
+      return null; // cursor: no skill dir; uses MCP + get_scene_schema
+  }
+}
+
+function copySkill(client) {
+  const dest = skillDirFor(client);
+  if (!dest) return;
+  if (!existsSync(SKILL_SRC)) return;
+  try {
+    mkdirSync(dirname(dest), { recursive: true });
+    cpSync(SKILL_SRC, dest, { recursive: true });
+    log(`${client}: skill installed (${dest})`);
+  } catch (err) {
+    log(`${client}: skill copy failed — ${err.message}`);
+  }
+}
+
 function install(client) {
   const path = configPathFor(client);
   if (!path) {
@@ -81,7 +112,8 @@ function install(client) {
   }
   try {
     const result = upsertServer(path);
-    log(`${client}: ${result} (${path})`);
+    log(`${client}: MCP ${result} (${path})`);
+    copySkill(client);
     return true;
   } catch (err) {
     log(`${client}: failed — ${err.message}`);

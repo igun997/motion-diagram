@@ -46,7 +46,15 @@ npx motion-diagram-mcp
 
 ### Auto-install the skill into your agent
 
-On install, Motion Diagram registers its MCP server + skill with common agents.
+"Installing the skill" means two things, both handled for you:
+
+1. **Registering the MCP server** so the agent gets the `render_*` tools
+   (`install-skill` writes this into the agent's MCP config).
+2. **Delivering the authoring guide** — the agent's first call to
+   `get_scene_schema` returns the full skill (workflow, sfx, colors, themes,
+   presets, camera) plus the scene JSON contract. No extra file to copy.
+
+On install, Motion Diagram registers its MCP server with common agents.
 You can also run it manually:
 
 ```bash

@@ -15,9 +15,12 @@ import { renderCarousel } from "../render/renderCarousel.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "../..");
-const OUT_DIR = process.env.MOTION_OUT_DIR || path.join(ROOT, "output");
+// Output goes to the caller's working dir, NOT the package install location.
+// Override with MOTION_OUT_DIR. Falls back to <cwd>/motion-diagram-output.
+const OUT_DIR = process.env.MOTION_OUT_DIR || path.join(process.cwd(), "motion-diagram-output");
 
 const SCHEMA_DOC = path.join(ROOT, "docs", "SCHEMA.md");
+const SKILL_DOC = path.join(ROOT, "docs", "AGENT_SKILL.md");
 
 const sceneSchema = {
   type: "object",
@@ -114,6 +117,11 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
             type: "string",
             description: "Output filename (e.g. login-flow.mp4). Optional.",
           },
+          outDir: {
+            type: "string",
+            description:
+              "Absolute directory to write the MP4 into. Strongly recommended — pass the user's project/output folder. Defaults to MOTION_OUT_DIR or <cwd>/motion-diagram-output.",
+          },
         },
       },
     },
@@ -127,6 +135,11 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         properties: {
           scene: sceneSchema,
           name: { type: "string", description: "Output subfolder name. Optional." },
+          outDir: {
+            type: "string",
+            description:
+              "Absolute directory to write slides into. Strongly recommended — pass the user's project/output folder. Defaults to MOTION_OUT_DIR or <cwd>/motion-diagram-output.",
+          },
         },
       },
     },
@@ -144,20 +157,23 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
   const { name, arguments: args } = req.params;
   try {
     if (name === "get_scene_schema") {
-      const doc = fs.existsSync(SCHEMA_DOC)
+      const schema = fs.existsSync(SCHEMA_DOC)
         ? fs.readFileSync(SCHEMA_DOC, "utf8")
         : "schema doc missing";
+      const skill = fs.existsSync(SKILL_DOC) ? fs.readFileSync(SKILL_DOC, "utf8") : "";
+      const doc = skill ? `${skill}\n\n---\n\n# Scene JSON contract\n\n${schema}` : schema;
       return ok(doc);
     }
 
     if (name === "render_motion_diagram") {
       const scene = args.scene;
       if (!scene || !scene.nodes) return fail("Missing scene.nodes");
-      fs.mkdirSync(OUT_DIR, { recursive: true });
+      const outDir = args.outDir || OUT_DIR;
+      fs.mkdirSync(outDir, { recursive: true });
       const file =
         args.filename ||
         `${(scene.meta?.title || "diagram").replace(/\W+/g, "-").toLowerCase()}.mp4`;
-      const outPath = path.join(OUT_DIR, file.endsWith(".mp4") ? file : file + ".mp4");
+      const outPath = path.join(outDir, file.endsWith(".mp4") ? file : file + ".mp4");
       await renderVideo(scene, outPath);
       return ok(`Rendered MP4: ${outPath}`);
     }
@@ -165,8 +181,9 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
     if (name === "render_carousel") {
       const scene = args.scene;
       if (!scene || !scene.nodes) return fail("Missing scene.nodes");
+      const base = args.outDir || OUT_DIR;
       const sub = args.name || (scene.meta?.title || "carousel").replace(/\W+/g, "-").toLowerCase();
-      const outDir = path.join(OUT_DIR, sub);
+      const outDir = path.join(base, sub);
       const results = await renderCarousel(scene, outDir);
       const lines = results.map((r) => `- ${r.gif}${r.webp ? " + " + r.webp : ""}`).join("\n");
       return ok(`Rendered ${results.length} slide(s) in ${outDir}:\n${lines}`);

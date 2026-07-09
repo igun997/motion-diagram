@@ -28,7 +28,10 @@ our checkout pipeline", "make a diagram video of the payment API".
    d. Optional: `process` ring while a node works; `reverse` pulse for a
    response; `camera:"follow"` for long/complex flows.
 6. Render: `render_motion_diagram` (MP4 with sound) or `render_carousel`
-   (silent grouped slides). Tell the user the output path returned by the tool.
+   (silent grouped slides). **Pass `outDir`** = the user's project/output folder
+   (absolute path) so the file lands where they can find it — otherwise it goes
+   to `MOTION_OUT_DIR` or `<cwd>/motion-diagram-output`. Tell the user the
+   output path returned by the tool.
 
 ## Choosing output mode
 
