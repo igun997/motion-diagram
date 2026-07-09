@@ -24,6 +24,14 @@ export function DiagramEdge({ edge, frame, drawFrame, drawDuration = 18, theme }
   const offset = dash * (1 - progress);
 
   const showArrow = progress > 0.95;
+  const drawn = progress >= 1;
+
+  // Post-draw line style: solid | dashed | dotted (marching ants when animated).
+  const style = edge.style || "solid";
+  const styleColor = edge.color || edgeColor;
+  const STYLE_DASH = { solid: null, dashed: "14 10", dotted: "2 9" };
+  const styleDasharray = STYLE_DASH[style];
+  const marchOffset = -(local * 0.9); // marching-ants for dashed/dotted
   const ang = endAngle(points);
   const tip = points[points.length - 1];
 
@@ -32,19 +40,31 @@ export function DiagramEdge({ edge, frame, drawFrame, drawDuration = 18, theme }
 
   return (
     <g opacity={local < 0 ? 0 : 1}>
-      <path
-        d={d}
-        fill="none"
-        stroke={edgeColor}
-        strokeWidth={2.5}
-        strokeDasharray={dash}
-        strokeDashoffset={offset}
-        strokeLinecap="round"
-      />
+      {drawn && styleDasharray ? (
+        <path
+          d={d}
+          fill="none"
+          stroke={styleColor}
+          strokeWidth={2.5}
+          strokeDasharray={styleDasharray}
+          strokeDashoffset={marchOffset}
+          strokeLinecap={style === "dotted" ? "round" : "butt"}
+        />
+      ) : (
+        <path
+          d={d}
+          fill="none"
+          stroke={styleColor}
+          strokeWidth={2.5}
+          strokeDasharray={dash}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+        />
+      )}
       {showArrow && (
         <polygon
           points="0,-6 12,0 0,6"
-          fill={edgeColor}
+          fill={styleColor}
           transform={`translate(${tip.x} ${tip.y}) rotate(${ang})`}
         />
       )}

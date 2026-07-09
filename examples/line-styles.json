@@ -1,0 +1,44 @@
+{
+  "meta": { "title": "Sync vs Async Flow", "fps": 30, "width": 1920, "height": 1080, "theme": "midnight" },
+  "legend": [
+    { "label": "Sync request", "color": "#38bdf8", "style": "solid" },
+    { "label": "Async event", "color": "#a78bfa", "style": "dashed" },
+    { "label": "Cache / optional", "color": "#34d399", "style": "dotted" }
+  ],
+  "nodes": [
+    { "id": "client", "label": "Client", "shape": "rect", "icon": "user" },
+    { "id": "api", "label": "API", "shape": "rect", "icon": "server" },
+    { "id": "worker", "label": "Worker", "shape": "rect", "icon": "gear" },
+    { "id": "cache", "label": "Cache", "shape": "stadium", "icon": "cache" },
+    { "id": "db", "label": "DB", "shape": "stadium", "icon": "database" }
+  ],
+  "edges": [
+    { "id": "c_api", "from": "client", "to": "api", "label": "GET /data", "color": "#38bdf8", "style": "solid" },
+    { "id": "api_cache", "from": "api", "to": "cache", "label": "lookup", "color": "#34d399", "style": "dotted" },
+    { "id": "api_db", "from": "api", "to": "db", "label": "query", "color": "#38bdf8", "style": "solid" },
+    { "id": "api_worker", "from": "api", "to": "worker", "label": "enqueue job", "color": "#a78bfa", "style": "dashed" }
+  ],
+  "timeline": [
+    { "at": 0,  "type": "reveal-node", "target": "client" },
+    { "at": 8,  "type": "reveal-node", "target": "api" },
+    { "at": 16, "type": "reveal-node", "target": "cache" },
+    { "at": 24, "type": "reveal-node", "target": "db" },
+    { "at": 32, "type": "reveal-node", "target": "worker" },
+
+    { "at": 44, "type": "reveal-edge", "target": "c_api" },
+    { "at": 56, "type": "reveal-edge", "target": "api_cache" },
+    { "at": 68, "type": "reveal-edge", "target": "api_db" },
+    { "at": 80, "type": "reveal-edge", "target": "api_worker" },
+
+    { "at": 100, "type": "pulse", "edge": "c_api", "color": "#38bdf8",
+      "onArrive": { "flash": true, "sfx": "whoosh" } },
+    { "at": 135, "type": "pulse", "edge": "api_cache", "color": "#34d399", "speed": 1.4,
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 165, "type": "pulse", "edge": "api_db", "color": "#38bdf8",
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 200, "type": "pulse", "edge": "api_db", "color": "#34d399", "reverse": true,
+      "onArrive": { "flash": true, "sfx": "ding" } },
+    { "at": 235, "type": "pulse", "edge": "api_worker", "color": "#a78bfa", "speed": 0.9,
+      "onArrive": { "flash": true, "sfx": "ding" } }
+  ]
+}

@@ -6,6 +6,7 @@ import { DiagramNode } from "./DiagramNode.jsx";
 import { DiagramEdge } from "./DiagramEdge.jsx";
 import { Pulse } from "./Pulse.jsx";
 import { GroupBox } from "./GroupBox.jsx";
+import { Legend } from "./Legend.jsx";
 import { pointAt } from "./geometry.js";
 
 const SFX_FILES = { beep: "sfx/beep.wav", whoosh: "sfx/whoosh.wav", ding: "sfx/ding.wav" };
@@ -28,7 +29,7 @@ function useCamera(events, frame, bounds, width, height) {
   }, [events, frame, bounds, width, height]);
 }
 
-export function VideoDiagram({ layout, events, groups = [], theme, nodeAppear, edgeDraw }) {
+export function VideoDiagram({ layout, events, groups = [], theme, legend = [], nodeAppear, edgeDraw }) {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const { nodes, edges, bounds } = layout;
@@ -100,6 +101,8 @@ export function VideoDiagram({ layout, events, groups = [], theme, nodeAppear, e
             return <DiagramNode key={node.id} node={node} frame={frame} fps={fps} appearFrame={appearFrame} theme={theme} />;
           })}
         </g>
+        {/* legend: fixed screen position, outside camera transform */}
+        <Legend items={legend} theme={theme} appearFrame={0} />
       </svg>
       {/* sfx: declared unconditionally via Sequence so Remotion extracts audio */}
       {events.flatMap((e, i) => {

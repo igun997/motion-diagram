@@ -61,7 +61,7 @@ export function RemotionRoot() {
       fps={fps}
       width={width}
       height={height}
-      defaultProps={{ layout, events, groups, theme, nodeAppear: 20, edgeDraw: 18 }}
+      defaultProps={{ layout, events, groups, theme, legend: scene.legend || [], nodeAppear: 20, edgeDraw: 18 }}
     />
   );
 }
