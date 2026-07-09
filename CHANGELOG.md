@@ -4,6 +4,18 @@ All notable changes to this project are documented here. Format based on
 [Keep a Changelog](https://keepachangelog.com/), versioning follows
 [SemVer](https://semver.org/).
 
+## [1.0.2] - 2026-07-09
+
+### Fixed
+
+- **Render failed when the package was installed as a dependency** (e.g. the MCP
+  server run via `npx motion-diagram-mcp`): `Module parse failed: Unexpected
+token` at `<Composition>`. Remotion's bundler excludes `node_modules` from its
+  JSX loader, so the package's own `.jsx` scenes were left untransformed. Added a
+  `webpackOverride` (esbuild-loader) that transpiles this package's source
+  wherever it lives. CLI, MCP, and carousel renders now work from an installed
+  copy.
+
 ## [1.0.1] - 2026-07-09
 
 ### Fixed
@@ -39,5 +51,6 @@ All notable changes to this project are documented here. Format based on
   `install-skill` to register the MCP server with Cursor, Claude Desktop, and Pi.
 - CI (lint + prettier) and npm publish-on-release workflows.
 
+[1.0.2]: https://github.com/igun997/motion-diagram/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/igun997/motion-diagram/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/igun997/motion-diagram/releases/tag/v1.0.0

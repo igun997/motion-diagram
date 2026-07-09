@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { bundle } from "@remotion/bundler";
 import { selectComposition, renderMedia } from "@remotion/renderer";
+import { webpackOverride } from "./webpackOverride.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ENTRY = path.resolve(__dirname, "../scenes/index.js");
@@ -10,6 +11,7 @@ const ENTRY = path.resolve(__dirname, "../scenes/index.js");
 export async function renderVideo(scene, outPath, onProgress) {
   const serveUrl = await bundle({
     entryPoint: ENTRY,
+    webpackOverride,
     // pass scene to the bundle via env
     onProgress: () => {},
   });

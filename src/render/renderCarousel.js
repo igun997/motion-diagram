@@ -6,6 +6,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { bundle } from "@remotion/bundler";
 import { selectComposition, renderMedia } from "@remotion/renderer";
+import { webpackOverride } from "./webpackOverride.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ENTRY = path.resolve(__dirname, "../scenes/index.js");
@@ -72,7 +73,7 @@ function gifToWebp(gifPath, webpPath) {
 
 export async function renderCarousel(scene, outDir, onSlide) {
   fs.mkdirSync(outDir, { recursive: true });
-  const serveUrl = await bundle({ entryPoint: ENTRY, onProgress: () => {} });
+  const serveUrl = await bundle({ entryPoint: ENTRY, webpackOverride, onProgress: () => {} });
   const slides = buildSlides(scene);
   const results = [];
   for (let i = 0; i < slides.length; i++) {
