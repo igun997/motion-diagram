@@ -50,6 +50,31 @@ Return pulses usually get `sfx: none` except the final one to the client (`ding`
 - Use one hue per logical flow (request vs response vs error).
 - Errors: red `#f43f5e`. Success: green `#34d399`. Request: blue `#38bdf8`.
 
+## Themes (agent picks the vibe)
+Set `meta.theme`: `dark` (default), `light`, `midnight`, `blueprint`, `mono`.
+Use `light` for clean/corporate, `blueprint` for infra/architecture, `mono` for
+minimal. Tweak any color via `meta.themeOverrides`.
+
+## Line styles + legend (say what each line means)
+- Give each edge a `style`: `solid` (sync call), `dashed` (async/event),
+  `dotted` (cache/optional). Dashed/dotted animate as marching-ants.
+- Give edges a `color` to group flows by meaning.
+- Add a `legend` array so viewers know what each line represents.
+
+## Group boxes (process containers)
+- Add `groups: [{id,label,color}]` and set matching `node.group`.
+- Boxes auto-size with gap; use to show tiers (frontend/backend/data,
+  master/slave, service mesh). Great for infra diagrams.
+
+## Icons (use freely)
+- Built-in key (`server`, `database`, `cache`, ...), OR an emoji in `icon`,
+  OR explicit `iconText: "⚡"`, OR custom `iconPath` (SVG path in 24x24).
+- Nodes auto-widen so labels never overflow the border.
+
+## Canvas size / mobile
+- Landscape default `1920x1080`. For mobile/reels set portrait
+  `width:1080, height:1920`. Keep flows vertical (top→bottom) so they fit.
+
 ## Carousel
 - Set `group` on nodes to split into slides (one slide per group).
 - Carousel is silent (looping GIF+WebP). Keep each group small (2-4 nodes).

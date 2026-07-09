@@ -11,12 +11,32 @@ AI Agent emits this JSON. Renderer executes it. Agent = brain, renderer = execut
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "mode": "video"          // "video" | "carousel"
+    "mode": "video",         // "video" | "carousel"
+    "theme": "dark"          // dark | light | midnight | blueprint | mono
+    // optional: "themeOverrides": { "background": "...", "nodeText": "...", "shapes": {...} }
   },
+  "groups": [ /* Group[]  optional, draws process boxes */ ],
+  "legend": [ /* Legend[] optional, explains line styles */ ],
   "nodes": [ /* Node[] */ ],
   "edges": [ /* Edge[] */ ],
   "timeline": [ /* Event[] */ ]
 }
+```
+
+## Group (process box)
+Any nodes sharing `group` are wrapped in an animated dashed box.
+```jsonc
+{
+  "id": "backend",           // matches node.group
+  "label": "Backend Services",
+  "color": "#a78bfa"         // box border + label tab color
+}
+```
+
+## Legend
+Fixed-position key explaining what each line style/color means.
+```jsonc
+{ "label": "Async event", "color": "#a78bfa", "style": "dashed" }  // style: solid | dashed | dotted
 ```
 
 ## Node
@@ -25,16 +45,21 @@ AI Agent emits this JSON. Renderer executes it. Agent = brain, renderer = execut
   "id": "api",
   "label": "API Gateway",
   "shape": "rect",           // rect | diamond | stadium
-  "icon": "server",          // optional icon key (see Icon set below)
-  "group": "backend"         // optional, for carousel slide grouping / color theme
+  "icon": "server",          // built-in key (Icon set) OR an emoji like "🛒"
+  "iconText": "⚡",           // optional: explicit emoji/char glyph
+  "iconPath": "M4 4h16...",  // optional: raw SVG path 'd' in 24x24 viewBox (agent-drawn)
+  "group": "backend"         // optional; wraps in process box + carousel grouping
 }
 ```
+Node width auto-sizes to label + icon (no text overflow). Agent picks any icon
+form freely: built-in key, emoji, or custom `iconPath`.
 
 ## Icon set
 Built-in icon keys (rendered as SVG glyph left of label):
 `user`, `client`, `server`, `api`, `database`, `cloud`, `queue`, `cache`,
 `lock`, `key`, `gear`, `bolt`, `globe`, `mobile`, `mail`, `file`, `check`,
-`cross`, `warning`. Unknown key → no icon.
+`cross`, `warning`. Unknown long key → no icon. Short unknown key (≤3 chars) →
+rendered as emoji/text. Agents may invent glyphs via `iconText` or `iconPath`.
 ```jsonc
 { "//": "placeholder to keep block" }
 ```
@@ -46,7 +71,9 @@ Position auto-computed by dagre layout. Agent does NOT set x/y.
   "id": "e1",
   "from": "client",
   "to": "api",
-  "label": "POST /login"     // optional
+  "label": "POST /login",    // optional
+  "color": "#38bdf8",        // optional line + arrow color
+  "style": "solid"           // solid | dashed | dotted (marching-ants when dashed/dotted)
 }
 ```
 
