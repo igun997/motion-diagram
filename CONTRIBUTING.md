@@ -29,15 +29,15 @@ npm run render examples/login-flow.json -- --out output/login-flow.mp4
 
 Useful scripts:
 
-| Script | What it does |
-|--------|--------------|
-| `npm run render <scene.json> -- --out <file>` | Render a scene to MP4 or carousel |
-| `npm run studio` | Open Remotion Studio for live preview |
-| `npm run mcp` | Start the MCP server (stdio) |
-| `npm run lint` | ESLint over the codebase |
-| `npm run format` | Prettier write |
-| `npm run format:check` | Prettier check (CI uses this) |
-| `npm run doctor` | Verify Node, ffmpeg, deps |
+| Script                                        | What it does                          |
+| --------------------------------------------- | ------------------------------------- |
+| `npm run render <scene.json> -- --out <file>` | Render a scene to MP4 or carousel     |
+| `npm run studio`                              | Open Remotion Studio for live preview |
+| `npm run mcp`                                 | Start the MCP server (stdio)          |
+| `npm run lint`                                | ESLint over the codebase              |
+| `npm run format`                              | Prettier write                        |
+| `npm run format:check`                        | Prettier check (CI uses this)         |
+| `npm run doctor`                              | Verify Node, ffmpeg, deps             |
 
 ## Project layout
 
@@ -93,7 +93,7 @@ chore: bump remotion
 ## Pull requests
 
 - Every PR runs the **CI** workflow: ESLint + Prettier check. Both must pass.
-- Describe *what* changed, *why*, and *how you verified* (which example you
+- Describe _what_ changed, _why_, and _how you verified_ (which example you
   rendered, ffprobe output).
 - Screenshots or a short clip of the rendered result are very welcome.
 

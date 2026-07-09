@@ -31,7 +31,11 @@ function configPathFor(client) {
       if (os === "darwin")
         return join(home, "Library", "Application Support", "Claude", "claude_desktop_config.json");
       if (os === "win32")
-        return join(process.env.APPDATA || join(home, "AppData", "Roaming"), "Claude", "claude_desktop_config.json");
+        return join(
+          process.env.APPDATA || join(home, "AppData", "Roaming"),
+          "Claude",
+          "claude_desktop_config.json"
+        );
       return join(home, ".config", "Claude", "claude_desktop_config.json");
     default:
       return null;

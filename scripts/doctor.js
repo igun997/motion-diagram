@@ -34,7 +34,9 @@ function has(cmd) {
 
 function version(cmd) {
   try {
-    return execSync(cmd, { stdio: ["ignore", "pipe", "ignore"] }).toString().trim();
+    return execSync(cmd, { stdio: ["ignore", "pipe", "ignore"] })
+      .toString()
+      .trim();
   } catch {
     return null;
   }
@@ -58,8 +60,7 @@ else warn("ffprobe not found — used to verify rendered output");
 if (existsSync(join(root, "node_modules", "remotion"))) ok("dependencies installed (remotion)");
 else fail("dependencies missing — run `npm install`");
 
-if (existsSync(join(root, "node_modules", "@modelcontextprotocol", "sdk")))
-  ok("MCP SDK installed");
+if (existsSync(join(root, "node_modules", "@modelcontextprotocol", "sdk"))) ok("MCP SDK installed");
 else warn("@modelcontextprotocol/sdk missing — MCP server won't start");
 
 // sfx assets

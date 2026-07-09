@@ -58,11 +58,11 @@ npx motion-diagram install-skill --client pi
 
 This writes the MCP server entry to each agent's config:
 
-| Agent  | Config file |
-|--------|-------------|
-| Cursor | `~/.cursor/mcp.json` |
+| Agent          | Config file                                                                                                                                                                               |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cursor         | `~/.cursor/mcp.json`                                                                                                                                                                      |
 | Claude Desktop | `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS), `%APPDATA%/Claude/claude_desktop_config.json` (Windows), `~/.config/Claude/claude_desktop_config.json` (Linux) |
-| Pi | `~/.pi/agent/mcp.json` |
+| Pi             | `~/.pi/agent/mcp.json`                                                                                                                                                                    |
 
 The entry looks like:
 
@@ -71,9 +71,9 @@ The entry looks like:
   "mcpServers": {
     "motion-diagram": {
       "command": "npx",
-      "args": ["-y", "motion-diagram-mcp"]
-    }
-  }
+      "args": ["-y", "motion-diagram-mcp"],
+    },
+  },
 }
 ```
 
