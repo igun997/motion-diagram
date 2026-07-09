@@ -2,8 +2,19 @@
 // CLI: motion-diagram render <scene.json> --mode video --out output/x.mp4
 import fs from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { renderVideo } from "../render/renderVideo.js";
 import { renderCarousel } from "../render/renderCarousel.js";
+
+const PKG_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+
+function runScript(rel, args) {
+  const r = spawnSync(process.execPath, [path.join(PKG_ROOT, rel), ...args], {
+    stdio: "inherit",
+  });
+  process.exit(r.status ?? 1);
+}
 
 function parseArgs(argv) {
   const [cmd, file, ...rest] = argv;
@@ -19,8 +30,24 @@ function parseArgs(argv) {
 async function main() {
   const { cmd, file, opts } = parseArgs(process.argv.slice(2));
 
+  if (cmd === "install-skill") {
+    runScript("scripts/install-skill.js", process.argv.slice(3));
+    return;
+  }
+  if (cmd === "doctor") {
+    runScript("scripts/doctor.js", process.argv.slice(3));
+    return;
+  }
+
   if (cmd !== "render" || !file) {
-    console.log("Usage: motion-diagram render <scene.json> [--mode video] [--out output/x.mp4]");
+    console.log(
+      [
+        "Usage:",
+        "  motion-diagram render <scene.json> [--mode video|carousel] [--out output/x.mp4]",
+        "  motion-diagram install-skill [--client cursor|pi|claude] [--auto]",
+        "  motion-diagram doctor",
+      ].join("\n")
+    );
     process.exit(1);
   }
 

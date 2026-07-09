@@ -4,6 +4,15 @@ All notable changes to this project are documented here. Format based on
 [Keep a Changelog](https://keepachangelog.com/), versioning follows
 [SemVer](https://semver.org/).
 
+## [1.0.4] - 2026-07-09
+
+### Fixed
+
+- **`motion-diagram install-skill` and `doctor` were not wired into the CLI** —
+  the bin only handled `render`, so the documented `install-skill` command just
+  printed usage and exited. Both subcommands now dispatch correctly, and the
+  usage text lists all three commands.
+
 ## [1.0.3] - 2026-07-09
 
 ### Fixed
@@ -73,6 +82,7 @@ token` at `<Composition>`. Remotion's bundler excludes `node_modules` from its
   `install-skill` to register the MCP server with Cursor, Claude Desktop, and Pi.
 - CI (lint + prettier) and npm publish-on-release workflows.
 
+[1.0.4]: https://github.com/igun997/motion-diagram/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/igun997/motion-diagram/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/igun997/motion-diagram/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/igun997/motion-diagram/compare/v1.0.0...v1.0.1
