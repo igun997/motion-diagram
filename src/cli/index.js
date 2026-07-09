@@ -3,6 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { renderVideo } from "../render/renderVideo.js";
+import { renderCarousel } from "../render/renderCarousel.js";
 
 function parseArgs(argv) {
   const [cmd, file, ...rest] = argv;
@@ -35,8 +36,16 @@ async function main() {
   fs.mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
 
   if (mode === "carousel") {
-    console.error("carousel mode not implemented yet");
-    process.exit(1);
+    const outDir = opts.out || `output/${path.basename(file, path.extname(file))}-carousel`;
+    fs.mkdirSync(path.resolve(outDir), { recursive: true });
+    console.log(`Rendering carousel "${scene.meta?.title || file}" -> ${outDir}/`);
+    const results = await renderCarousel(scene, path.resolve(outDir), (i, total, name, p) => {
+      process.stdout.write(`\r  slide ${i}/${total} ${name} ${Math.round(p * 100)}%   `);
+    });
+    process.stdout.write("\n");
+    for (const r of results) console.log(`  ${r.gif}${r.webp ? " + " + r.webp : ""}`);
+    console.log("Done:", outDir);
+    return;
   }
 
   console.log(`Rendering "${scene.meta?.title || file}" -> ${out}`);

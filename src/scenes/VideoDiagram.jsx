@@ -1,6 +1,6 @@
 // Main Remotion composition. Executes normalized timeline over a laid-out spec.
 import React, { useMemo } from "react";
-import { AbsoluteFill, useCurrentFrame, useVideoConfig, Audio, staticFile } from "remotion";
+import { AbsoluteFill, useCurrentFrame, useVideoConfig, Audio, Sequence, staticFile } from "remotion";
 import { interpolate } from "remotion";
 import { DiagramNode } from "./DiagramNode.jsx";
 import { DiagramEdge } from "./DiagramEdge.jsx";
@@ -91,19 +91,18 @@ export function VideoDiagram({ layout, events, nodeAppear, edgeDraw }) {
           })}
         </g>
       </svg>
-      {/* sfx */}
+      {/* sfx: declared unconditionally via Sequence so Remotion extracts audio */}
       {events.flatMap((e, i) => {
         const cues = [];
-        if (e.sfx && SFX_FILES[e.sfx]) cues.push({ frame: e.at, file: SFX_FILES[e.sfx], k: `s${i}` });
+        if (e.sfx && SFX_FILES[e.sfx]) cues.push({ at: e.at, file: SFX_FILES[e.sfx], k: `s${i}` });
         if (e.onArrive && e.onArrive.sfx && SFX_FILES[e.onArrive.sfx])
-          cues.push({ frame: e.at + (e.durationInFrames || 0), file: SFX_FILES[e.onArrive.sfx], k: `a${i}` });
-        return cues.map((c) => <SfxAt key={c.k} frame={frame} cueFrame={c.frame} file={c.file} fps={fps} />);
+          cues.push({ at: e.at + (e.durationInFrames || 0), file: SFX_FILES[e.onArrive.sfx], k: `a${i}` });
+        return cues.map((c) => (
+          <Sequence key={c.k} from={c.at} durationInFrames={Math.round(fps)}>
+            <Audio src={staticFile(c.file)} />
+          </Sequence>
+        ));
       })}
     </AbsoluteFill>
   );
-}
-
-function SfxAt({ frame, cueFrame, file, fps }) {
-  if (frame < cueFrame || frame > cueFrame + fps) return null;
-  return <Audio src={staticFile(file)} />;
 }
