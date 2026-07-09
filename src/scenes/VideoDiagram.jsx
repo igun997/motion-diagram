@@ -5,6 +5,7 @@ import { interpolate } from "remotion";
 import { DiagramNode } from "./DiagramNode.jsx";
 import { DiagramEdge } from "./DiagramEdge.jsx";
 import { Pulse } from "./Pulse.jsx";
+import { GroupBox } from "./GroupBox.jsx";
 import { pointAt } from "./geometry.js";
 
 const SFX_FILES = { beep: "sfx/beep.wav", whoosh: "sfx/whoosh.wav", ding: "sfx/ding.wav" };
@@ -27,7 +28,7 @@ function useCamera(events, frame, bounds, width, height) {
   }, [events, frame, bounds, width, height]);
 }
 
-export function VideoDiagram({ layout, events, nodeAppear, edgeDraw }) {
+export function VideoDiagram({ layout, events, groups = [], nodeAppear, edgeDraw }) {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const { nodes, edges, bounds } = layout;
@@ -49,6 +50,13 @@ export function VideoDiagram({ layout, events, nodeAppear, edgeDraw }) {
     <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 30%, #0b1220, #060912)" }}>
       <svg width={width} height={height}>
         <g transform={`translate(${cam.tx} ${cam.ty}) scale(${cam.scale})`}>
+          {/* group boxes (behind everything) */}
+          {groups.map((box) => {
+            const first = events.find(
+              (e) => e.type === "reveal-node" && layout.nodes.find((n) => n.id === e.target && n.group === box.id)
+            );
+            return <GroupBox key={box.id} box={box} appearFrame={first ? first.at : 0} />;
+          })}
           {/* edges */}
           {edges.map((edge) => {
             const drawEv = events.find((e) => e.type === "reveal-edge" && e.target === edge.id);

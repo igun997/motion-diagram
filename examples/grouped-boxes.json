@@ -1,0 +1,50 @@
+{
+  "meta": { "title": "Checkout Pipeline", "fps": 30, "width": 1920, "height": 1080, "mode": "video" },
+  "groups": [
+    { "id": "frontend", "label": "Frontend", "color": "#38bdf8" },
+    { "id": "backend", "label": "Backend Services", "color": "#a78bfa" },
+    { "id": "storage", "label": "Storage", "color": "#34d399" }
+  ],
+  "nodes": [
+    { "id": "web", "label": "Web App", "shape": "rect", "icon": "🛒", "group": "frontend" },
+    { "id": "gw", "label": "Gateway", "shape": "rect", "icon": "globe", "group": "frontend" },
+    { "id": "orders", "label": "Orders", "shape": "rect", "icon": "server", "group": "backend" },
+    { "id": "pay", "label": "Payments", "shape": "rect", "icon": "💳", "group": "backend" },
+    { "id": "db", "label": "Postgres", "shape": "stadium", "icon": "database", "group": "storage" },
+    { "id": "cache", "label": "Redis", "shape": "stadium", "iconText": "⚡", "group": "storage" }
+  ],
+  "edges": [
+    { "id": "web_gw", "from": "web", "to": "gw", "label": "checkout" },
+    { "id": "gw_orders", "from": "gw", "to": "orders", "label": "createOrder" },
+    { "id": "orders_pay", "from": "orders", "to": "pay", "label": "charge" },
+    { "id": "orders_db", "from": "orders", "to": "db", "label": "save" },
+    { "id": "orders_cache", "from": "orders", "to": "cache", "label": "cache" }
+  ],
+  "timeline": [
+    { "at": 0,   "type": "reveal-node", "target": "web" },
+    { "at": 8,   "type": "reveal-node", "target": "gw" },
+    { "at": 16,  "type": "reveal-node", "target": "orders" },
+    { "at": 24,  "type": "reveal-node", "target": "pay" },
+    { "at": 32,  "type": "reveal-node", "target": "db" },
+    { "at": 40,  "type": "reveal-node", "target": "cache" },
+
+    { "at": 52,  "type": "reveal-edge", "target": "web_gw" },
+    { "at": 64,  "type": "reveal-edge", "target": "gw_orders" },
+    { "at": 74,  "type": "reveal-edge", "target": "orders_pay" },
+    { "at": 84,  "type": "reveal-edge", "target": "orders_db" },
+    { "at": 94,  "type": "reveal-edge", "target": "orders_cache" },
+
+    { "at": 110, "type": "pulse", "edge": "web_gw", "color": "#38bdf8",
+      "onArrive": { "flash": true, "sfx": "whoosh" } },
+    { "at": 145, "type": "pulse", "edge": "gw_orders", "color": "#38bdf8",
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 180, "type": "pulse", "edge": "orders_pay", "color": "#f59e0b",
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 215, "type": "pulse", "edge": "orders_pay", "color": "#34d399", "reverse": true,
+      "onArrive": { "flash": true, "sfx": "ding" } },
+    { "at": 250, "type": "pulse", "edge": "orders_db", "color": "#a78bfa",
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 280, "type": "pulse", "edge": "orders_cache", "color": "#22d3ee",
+      "onArrive": { "flash": true, "sfx": "ding" } }
+  ]
+}

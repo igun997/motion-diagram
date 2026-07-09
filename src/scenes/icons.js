@@ -27,3 +27,20 @@ export function iconPath(key) {
   if (!key) return null;
   return ICONS[key] || null;
 }
+
+// Resolve a node's icon into a render descriptor. Agents may supply:
+//   node.icon      -> built-in key (see ICONS) OR an emoji/char (rendered as text)
+//   node.iconPath  -> raw SVG path 'd' in a 24x24 viewBox (agent-drawn glyph)
+//   node.iconText  -> explicit emoji / short text glyph
+// Returns { kind: 'path', d } | { kind: 'text', text } | null.
+export function resolveIcon(node) {
+  if (!node) return null;
+  if (node.iconPath) return { kind: "path", d: node.iconPath };
+  if (node.iconText) return { kind: "text", text: node.iconText };
+  const key = node.icon;
+  if (!key) return null;
+  if (ICONS[key]) return { kind: "path", d: ICONS[key] };
+  // Unknown short key -> treat as emoji/char the agent invented.
+  if ([...key].length <= 3) return { kind: "text", text: key };
+  return null;
+}

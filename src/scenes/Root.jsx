@@ -4,6 +4,7 @@ import React from "react";
 import { Composition } from "remotion";
 import { VideoDiagram } from "./VideoDiagram.jsx";
 import { layoutDiagram } from "../core/layout.js";
+import { computeGroups } from "../core/groups.js";
 import { normalizeTimeline, timelineDuration } from "../core/timeline.js";
 
 function loadScene() {
@@ -46,6 +47,7 @@ export function RemotionRoot() {
   const height = scene.meta?.height || 1080;
 
   const layout = layoutDiagram({ nodes: scene.nodes, edges: scene.edges });
+  const groups = computeGroups(layout.nodes, scene.groups);
   const events = normalizeTimeline(scene.timeline, fps);
   const duration = timelineDuration(events);
 
@@ -57,7 +59,7 @@ export function RemotionRoot() {
       fps={fps}
       width={width}
       height={height}
-      defaultProps={{ layout, events, nodeAppear: 20, edgeDraw: 18 }}
+      defaultProps={{ layout, events, groups, nodeAppear: 20, edgeDraw: 18 }}
     />
   );
 }

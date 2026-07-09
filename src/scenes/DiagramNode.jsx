@@ -1,6 +1,7 @@
 // A single diagram node: shape + label with entrance pop animation.
 import React from "react";
 import { spring, interpolate } from "remotion";
+import { resolveIcon } from "./icons.js";
 
 const COLORS = {
   rect: { fill: "#1e293b", stroke: "#38bdf8" },
@@ -23,6 +24,8 @@ export function DiagramNode({ node, frame, fps, appearFrame }) {
   const c = COLORS[shape] || COLORS.rect;
   const cx = x;
   const cy = y;
+  const icon = resolveIcon(node);
+  const labelDx = icon ? 14 : 0; // shift label right to make room for icon
 
   const commonStyle = {
     fill: c.fill,
@@ -60,8 +63,21 @@ export function DiagramNode({ node, frame, fps, appearFrame }) {
       transform={`translate(${cx} ${cy}) scale(${scale}) translate(${-cx} ${-cy})`}
     >
       {shapeEl}
+      {icon && (
+        <g transform={`translate(${cx - width / 2 + 26} ${cy})`}>
+          {icon.kind === "path" ? (
+            <g transform="translate(-11 -11) scale(0.92)" stroke={c.stroke} strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round">
+              <path d={icon.d} />
+            </g>
+          ) : (
+            <text x={0} y={0} fontSize={22} textAnchor="middle" dominantBaseline="central">
+              {icon.text}
+            </text>
+          )}
+        </g>
+      )}
       <text
-        x={cx}
+        x={cx + labelDx}
         y={cy}
         fill="#f1f5f9"
         fontSize={20}
