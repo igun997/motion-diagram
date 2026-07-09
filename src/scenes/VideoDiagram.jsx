@@ -7,6 +7,7 @@ import { DiagramEdge } from "./DiagramEdge.jsx";
 import { Pulse } from "./Pulse.jsx";
 import { GroupBox } from "./GroupBox.jsx";
 import { Legend } from "./Legend.jsx";
+import { ProcessRing } from "./ProcessRing.jsx";
 import { pointAt } from "./geometry.js";
 
 const SFX_FILES = { beep: "sfx/beep.wav", whoosh: "sfx/whoosh.wav", ding: "sfx/ding.wav" };
@@ -152,6 +153,23 @@ export function VideoDiagram({ layout, events, groups = [], theme, legend = [], 
             const op = interpolate(local, [0, 20], [0.6, 0], { extrapolateRight: "clamp" });
             return <circle key={`f${i}`} cx={node.x} cy={node.y} r={r} fill="none" stroke={theme?.flash || "#fbbf24"} strokeWidth={3} opacity={op} />;
           })}
+          {/* process rings (working spinner around node) */}
+          {events
+            .filter((e) => e.type === "process")
+            .map((e, i) => {
+              const node = nodes.find((n) => n.id === e.target);
+              if (!node) return null;
+              return (
+                <ProcessRing
+                  key={`pr${i}`}
+                  node={node}
+                  frame={frame}
+                  startFrame={e.at}
+                  durationInFrames={e.durationInFrames || 40}
+                  color={e.color || theme?.flash || "#38bdf8"}
+                />
+              );
+            })}
           {/* nodes */}
           {nodes.map((node) => {
             const appearEv = events.find((e) => e.type === "reveal-node" && e.target === node.id);

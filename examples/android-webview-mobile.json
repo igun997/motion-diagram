@@ -1,0 +1,70 @@
+{
+  "meta": { "title": "Android WebView Flow", "preset": "instagram-reels", "theme": "dark", "camera": "follow", "cameraZoom": 1.8 },
+  "legend": [
+    { "label": "User action", "color": "#38bdf8", "style": "solid" },
+    { "label": "JS bridge", "color": "#f59e0b", "style": "dashed" },
+    { "label": "Native call", "color": "#a78bfa", "style": "solid" },
+    { "label": "Result", "color": "#34d399", "style": "solid" }
+  ],
+  "groups": [
+    { "id": "ui", "label": "WebView (JS)", "color": "#38bdf8" },
+    { "id": "bridge", "label": "JS Bridge", "color": "#f59e0b" },
+    { "id": "native", "label": "Native Android", "color": "#a78bfa" }
+  ],
+  "nodes": [
+    { "id": "user", "label": "User Tap", "shape": "stadium", "iconText": "👆", "group": "ui" },
+    { "id": "webview", "label": "WebView", "shape": "rect", "iconText": "🌐", "group": "ui" },
+    { "id": "js", "label": "JavaScript", "shape": "rect", "icon": "file", "group": "ui" },
+
+    { "id": "iface", "label": "JS Interface", "shape": "rect", "icon": "bolt", "group": "bridge" },
+
+    { "id": "activity", "label": "Activity", "shape": "rect", "icon": "mobile", "group": "native" },
+    { "id": "camera", "label": "Camera API", "shape": "rect", "iconText": "📷", "group": "native" },
+    { "id": "store", "label": "SharedPrefs", "shape": "stadium", "icon": "database", "group": "native" }
+  ],
+  "edges": [
+    { "id": "u_wv", "from": "user", "to": "webview", "label": "onClick", "color": "#38bdf8", "style": "solid" },
+    { "id": "wv_js", "from": "webview", "to": "js", "label": "event", "color": "#38bdf8", "style": "solid" },
+    { "id": "js_if", "from": "js", "to": "iface", "label": "Android.call()", "color": "#f59e0b", "style": "dashed" },
+    { "id": "if_act", "from": "iface", "to": "activity", "label": "invoke", "color": "#a78bfa", "style": "solid" },
+    { "id": "act_cam", "from": "activity", "to": "camera", "label": "openCamera", "color": "#a78bfa", "style": "solid" },
+    { "id": "act_store", "from": "activity", "to": "store", "label": "save", "color": "#a78bfa", "style": "solid" },
+    { "id": "act_js", "from": "activity", "to": "js", "label": "evaluateJavascript", "color": "#34d399", "style": "dashed" }
+  ],
+  "timeline": [
+    { "at": 0,   "type": "reveal-node", "target": "user" },
+    { "at": 8,   "type": "reveal-node", "target": "webview" },
+    { "at": 16,  "type": "reveal-node", "target": "js" },
+    { "at": 24,  "type": "reveal-node", "target": "iface" },
+    { "at": 32,  "type": "reveal-node", "target": "activity" },
+    { "at": 40,  "type": "reveal-node", "target": "camera" },
+    { "at": 48,  "type": "reveal-node", "target": "store" },
+
+    { "at": 60,  "type": "reveal-edge", "target": "u_wv" },
+    { "at": 70,  "type": "reveal-edge", "target": "wv_js" },
+    { "at": 80,  "type": "reveal-edge", "target": "js_if" },
+    { "at": 90,  "type": "reveal-edge", "target": "if_act" },
+    { "at": 100, "type": "reveal-edge", "target": "act_cam" },
+    { "at": 110, "type": "reveal-edge", "target": "act_store" },
+    { "at": 120, "type": "reveal-edge", "target": "act_js" },
+
+    { "at": 136, "type": "pulse", "edge": "u_wv", "color": "#38bdf8",
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 169, "type": "pulse", "edge": "wv_js", "color": "#38bdf8",
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 202, "type": "pulse", "edge": "js_if", "color": "#f59e0b", "speed": 0.9,
+      "onArrive": { "flash": true, "sfx": "whoosh" } },
+    { "at": 238, "type": "pulse", "edge": "if_act", "color": "#a78bfa",
+      "onArrive": { "flash": true, "sfx": "beep" } },
+
+    { "at": 270, "type": "process", "target": "activity", "durationInFrames": 70, "color": "#a78bfa" },
+    { "at": 280, "type": "pulse", "edge": "act_cam", "color": "#a78bfa",
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 300, "type": "process", "target": "camera", "durationInFrames": 50, "color": "#f59e0b" },
+    { "at": 320, "type": "pulse", "edge": "act_store", "color": "#a78bfa",
+      "onArrive": { "flash": true, "sfx": "beep" } },
+
+    { "at": 360, "type": "pulse", "edge": "act_js", "color": "#34d399",
+      "onArrive": { "flash": true, "sfx": "ding" } }
+  ]
+}
