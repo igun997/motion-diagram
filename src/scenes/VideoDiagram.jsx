@@ -1,7 +1,7 @@
 // Main Remotion composition. Executes normalized timeline over a laid-out spec.
 import React, { useMemo } from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig, Audio, Sequence, staticFile } from "remotion";
-import { interpolate } from "remotion";
+import { interpolate, Easing } from "remotion";
 import { DiagramNode } from "./DiagramNode.jsx";
 import { DiagramEdge } from "./DiagramEdge.jsx";
 import { Pulse } from "./Pulse.jsx";
@@ -11,31 +11,89 @@ import { pointAt } from "./geometry.js";
 
 const SFX_FILES = { beep: "sfx/beep.wav", whoosh: "sfx/whoosh.wav", ding: "sfx/ding.wav" };
 
-// Camera: find active focus event at/before current frame.
-function useCamera(events, frame, bounds, width, height) {
+// Camera: explicit `camera` focus events, OR auto zoom-follow that tracks each
+// active pulse so complex flows stay readable on small (portrait) screens.
+// Enable follow with meta.camera === "follow" (passed as followMode prop).
+function useCamera(events, edgeById, frame, bounds, width, height, followMode, followZoom) {
   return useMemo(() => {
+    const baseScale = Math.min(width / bounds.width, height / bounds.height, 1) * 0.9;
+    const fit = {
+      tx: width / 2 - (bounds.width / 2) * baseScale,
+      ty: height / 2 - (bounds.height / 2) * baseScale,
+      scale: baseScale,
+    };
+
+    // explicit camera events win
     let focus = null;
     for (const e of events) {
       if (e.type === "camera" && e.at <= frame) focus = e;
     }
-    const baseScale = Math.min(width / bounds.width, height / bounds.height, 1) * 0.9;
-    if (!focus) {
-      return { tx: width / 2 - (bounds.width / 2) * baseScale, ty: height / 2 - (bounds.height / 2) * baseScale, scale: baseScale };
+    if (focus) {
+      const zoom = (focus.zoom || 1.4) * baseScale;
+      const cx = bounds.width / 2;
+      const cy = bounds.height / 2;
+      return { tx: width / 2 - cx * zoom, ty: height / 2 - cy * zoom, scale: zoom };
     }
-    const zoom = (focus.zoom || 1.4) * baseScale;
-    const cx = bounds.width / 2;
-    const cy = bounds.height / 2;
-    return { tx: width / 2 - cx * zoom, ty: height / 2 - cy * zoom, scale: zoom };
-  }, [events, frame, bounds, width, height]);
+
+    if (followMode !== "follow") return fit;
+
+    // Auto-follow: gather pulse windows [start, end] with their midpoint.
+    const pulses = events
+      .filter((e) => e.type === "pulse" && edgeById.get(e.edge))
+      .map((e) => {
+        const dur = e.durationInFrames || 30;
+        const edge = edgeById.get(e.edge);
+        const mid = pointAt(edge.points, 0.5);
+        return { start: e.at, end: e.at + dur, mid };
+      })
+      .sort((a, b) => a.start - b.start);
+
+    if (!pulses.length) return fit;
+
+    const zoom = (followZoom || 1.9) * baseScale;
+    const HOLD = 12; // frames eased between targets
+    const targetFor = (m) => ({
+      tx: width / 2 - m.x * zoom,
+      ty: height / 2 - m.y * zoom,
+      scale: zoom,
+    });
+
+    // before first pulse -> fit (whole diagram during reveals)
+    if (frame < pulses[0].start - HOLD) return fit;
+
+    // find current or upcoming pulse
+    let cur = pulses[0];
+    let prevMid = null;
+    for (let i = 0; i < pulses.length; i++) {
+      if (frame >= pulses[i].start - HOLD) {
+        cur = pulses[i];
+        prevMid = i > 0 ? pulses[i - 1].mid : null;
+      }
+    }
+
+    const to = targetFor(cur.mid);
+    // ease-in from previous target (or fit) into current focus
+    const t = interpolate(frame, [cur.start - HOLD, cur.start], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.inOut(Easing.ease),
+    });
+    const from = prevMid ? targetFor(prevMid) : fit;
+    return {
+      tx: from.tx + (to.tx - from.tx) * t,
+      ty: from.ty + (to.ty - from.ty) * t,
+      scale: from.scale + (to.scale - from.scale) * t,
+    };
+  }, [events, edgeById, frame, bounds, width, height, followMode, followZoom]);
 }
 
-export function VideoDiagram({ layout, events, groups = [], theme, legend = [], nodeAppear, edgeDraw }) {
+export function VideoDiagram({ layout, events, groups = [], theme, legend = [], camera, cameraZoom, nodeAppear, edgeDraw }) {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const { nodes, edges, bounds } = layout;
 
   const edgeById = useMemo(() => new Map(edges.map((e) => [e.id, e])), [edges]);
-  const cam = useCamera(events, frame, bounds, width, height);
+  const cam = useCamera(events, edgeById, frame, bounds, width, height, camera, cameraZoom);
 
   // node flash map: node id -> latest flash start frame
   const flashes = [];

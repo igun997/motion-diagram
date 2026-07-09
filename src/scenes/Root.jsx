@@ -6,6 +6,7 @@ import { VideoDiagram } from "./VideoDiagram.jsx";
 import { layoutDiagram } from "../core/layout.js";
 import { computeGroups } from "../core/groups.js";
 import { resolveTheme } from "./themes.js";
+import { applyPreset } from "../core/presets.js";
 import { normalizeTimeline, timelineDuration } from "../core/timeline.js";
 
 function loadScene() {
@@ -43,9 +44,10 @@ function loadScene() {
 
 export function RemotionRoot() {
   const scene = loadScene();
-  const fps = scene.meta?.fps || 30;
-  const width = scene.meta?.width || 1920;
-  const height = scene.meta?.height || 1080;
+  const meta = applyPreset(scene.meta || {});
+  const fps = meta.fps || 30;
+  const width = meta.width || 1920;
+  const height = meta.height || 1080;
 
   const layout = layoutDiagram({ nodes: scene.nodes, edges: scene.edges });
   const groups = computeGroups(layout.nodes, scene.groups);
@@ -61,7 +63,7 @@ export function RemotionRoot() {
       fps={fps}
       width={width}
       height={height}
-      defaultProps={{ layout, events, groups, theme, legend: scene.legend || [], nodeAppear: 20, edgeDraw: 18 }}
+      defaultProps={{ layout, events, groups, theme, legend: scene.legend || [], camera: meta.camera || "fit", cameraZoom: meta.cameraZoom, nodeAppear: 20, edgeDraw: 18 }}
     />
   );
 }

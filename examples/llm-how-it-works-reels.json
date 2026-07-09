@@ -1,0 +1,73 @@
+{
+  "meta": { "title": "How LLMs Work", "preset": "instagram-reels", "theme": "light", "camera": "follow", "cameraZoom": 1.8 },
+  "legend": [
+    { "label": "Input flow", "color": "#0284c7", "style": "solid" },
+    { "label": "Attention", "color": "#c026d3", "style": "dashed" },
+    { "label": "Output", "color": "#16a34a", "style": "solid" }
+  ],
+  "groups": [
+    { "id": "input", "label": "Input", "color": "#0284c7" },
+    { "id": "model", "label": "Transformer", "color": "#c026d3" },
+    { "id": "output", "label": "Output", "color": "#16a34a" }
+  ],
+  "nodes": [
+    { "id": "prompt", "label": "Prompt", "shape": "stadium", "iconText": "💬", "group": "input" },
+    { "id": "tokens", "label": "Tokenize", "shape": "rect", "icon": "file", "group": "input" },
+    { "id": "embed", "label": "Embeddings", "shape": "rect", "iconText": "🔢", "group": "input" },
+
+    { "id": "attn", "label": "Self-Attention", "shape": "rect", "icon": "bolt", "group": "model" },
+    { "id": "ffn", "label": "Feed Forward", "shape": "rect", "icon": "gear", "group": "model" },
+    { "id": "layers", "label": "N x Layers", "shape": "rect", "iconText": "🧠", "group": "model" },
+
+    { "id": "logits", "label": "Logits", "shape": "rect", "icon": "bolt", "group": "output" },
+    { "id": "sample", "label": "Sample Token", "shape": "diamond", "iconText": "🎲", "group": "output" },
+    { "id": "text", "label": "Response", "shape": "stadium", "iconText": "✨", "group": "output" }
+  ],
+  "edges": [
+    { "id": "p_t", "from": "prompt", "to": "tokens", "label": "text", "color": "#0284c7", "style": "solid" },
+    { "id": "t_e", "from": "tokens", "to": "embed", "label": "ids", "color": "#0284c7", "style": "solid" },
+    { "id": "e_a", "from": "embed", "to": "attn", "label": "vectors", "color": "#0284c7", "style": "solid" },
+    { "id": "a_f", "from": "attn", "to": "ffn", "label": "context", "color": "#c026d3", "style": "dashed" },
+    { "id": "f_l", "from": "ffn", "to": "layers", "label": "transform", "color": "#c026d3", "style": "dashed" },
+    { "id": "l_lo", "from": "layers", "to": "logits", "label": "final state", "color": "#0284c7", "style": "solid" },
+    { "id": "lo_s", "from": "logits", "to": "sample", "label": "probs", "color": "#16a34a", "style": "solid" },
+    { "id": "s_txt", "from": "sample", "to": "text", "label": "next token", "color": "#16a34a", "style": "solid" }
+  ],
+  "timeline": [
+    { "at": 0,   "type": "reveal-node", "target": "prompt" },
+    { "at": 8,   "type": "reveal-node", "target": "tokens" },
+    { "at": 16,  "type": "reveal-node", "target": "embed" },
+    { "at": 24,  "type": "reveal-node", "target": "attn" },
+    { "at": 32,  "type": "reveal-node", "target": "ffn" },
+    { "at": 40,  "type": "reveal-node", "target": "layers" },
+    { "at": 48,  "type": "reveal-node", "target": "logits" },
+    { "at": 56,  "type": "reveal-node", "target": "sample" },
+    { "at": 64,  "type": "reveal-node", "target": "text" },
+
+    { "at": 76,  "type": "reveal-edge", "target": "p_t" },
+    { "at": 86,  "type": "reveal-edge", "target": "t_e" },
+    { "at": 96,  "type": "reveal-edge", "target": "e_a" },
+    { "at": 106, "type": "reveal-edge", "target": "a_f" },
+    { "at": 116, "type": "reveal-edge", "target": "f_l" },
+    { "at": 126, "type": "reveal-edge", "target": "l_lo" },
+    { "at": 136, "type": "reveal-edge", "target": "lo_s" },
+    { "at": 146, "type": "reveal-edge", "target": "s_txt" },
+
+    { "at": 162, "type": "pulse", "edge": "p_t", "color": "#0284c7",
+      "onArrive": { "flash": true, "sfx": "whoosh" } },
+    { "at": 195, "type": "pulse", "edge": "t_e", "color": "#0284c7",
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 228, "type": "pulse", "edge": "e_a", "color": "#0284c7",
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 261, "type": "pulse", "edge": "a_f", "color": "#c026d3", "speed": 0.9,
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 297, "type": "pulse", "edge": "f_l", "color": "#c026d3", "speed": 0.9,
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 333, "type": "pulse", "edge": "l_lo", "color": "#0284c7",
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 366, "type": "pulse", "edge": "lo_s", "color": "#16a34a",
+      "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 399, "type": "pulse", "edge": "s_txt", "color": "#16a34a",
+      "onArrive": { "flash": true, "sfx": "ding" } }
+  ]
+}
