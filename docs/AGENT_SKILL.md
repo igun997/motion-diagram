@@ -7,20 +7,32 @@ User asks to visualize/explain a system, API flow, pipeline, architecture, or
 process as an animated video or carousel. Examples: "show login flow", "animate
 our checkout pipeline", "make a diagram video of the payment API".
 
-## Workflow
+## Workflow (do these in order)
 1. Call `get_scene_schema` once to load the authoring contract.
-2. Design the scene from the user's description:
-   - **nodes**: each service/step. Pick `shape` (rect=service, diamond=decision,
-     stadium=datastore/endpoint) and `icon` (user, server, database, cloud, lock,
-     queue, cache, api, globe, key, bolt, mail, gear...).
-   - **edges**: connections, with short `label` (e.g. "POST /login").
-   - **timeline**: choreograph the story:
-     a. `reveal-node` each node (stagger ~8 frames apart).
-     b. `reveal-edge` each edge after its nodes exist.
-     c. `pulse` comets along edges to simulate traffic — set `color` per hop,
-        `onArrive.flash: true`, and sfx.
-3. Choose sfx **per event** (agent's call): `beep` on arrival, `whoosh` on send,
-   `ding` on success/final, or `none`. Do not overuse — silence is fine.
+2. Pick the **canvas**: set `meta.preset` (e.g. `instagram-reels`, `youtube`) and
+   `meta.theme`. Vertical presets → lay the flow top→bottom.
+3. Design **nodes** — one per service/step. Choose `shape` (rect=service,
+   diamond=decision, stadium=datastore/endpoint) and an `icon` (built-in key,
+   emoji, or custom `iconPath`). Group related nodes with `group` + a `groups`
+   entry to draw process boxes / tiers.
+4. Design **edges** — connections with a short `label` ("POST /login"). Set
+   `style` (solid=sync, dashed=async/event, dotted=cache/optional) and `color`
+   by meaning. Add a `legend` so viewers can read the line language.
+5. Choreograph the **timeline** (see Timing rules):
+   a. `reveal-node` each node, ~8 frames apart.
+   b. `reveal-edge` each edge after both its nodes exist.
+   c. `pulse` comets along edges once all reveals finish. Set `color` per hop,
+      `onArrive.flash: true`, and an sfx (see SFX by purpose).
+   d. Optional: `process` ring while a node works; `reverse` pulse for a
+      response; `camera:"follow"` for long/complex flows.
+6. Render: `render_motion_diagram` (MP4 with sound) or `render_carousel`
+   (silent grouped slides). Tell the user the output path returned by the tool.
+
+## Choosing output mode
+- **MP4** (`render_motion_diagram`): default. Has motion + sound. Use for reels,
+  shorts, explainer clips — anything with a temporal story.
+- **Carousel** (`render_carousel`): silent GIF+WebP, one slide per `group`. Use
+  when the user wants swipeable Instagram-style stills, not a video.
 
 ## SFX by purpose (agent decides intent)
 Map sound to the *meaning* of the moment, not mechanically:
@@ -38,7 +50,6 @@ Simulate a full cycle on ONE edge:
 2. later, response pulse on the SAME edge with `"reverse": true` and a
    different color (e.g. green `#34d399`) traveling `to->from`.
 Return pulses usually get `sfx: none` except the final one to the client (`ding`).
-4. Call `render_motion_diagram` (MP4) or `render_carousel` (grouped slides).
 
 ## Timing rules (30fps default)
 - Node reveals: 8 frames apart.
