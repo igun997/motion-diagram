@@ -1,0 +1,27 @@
+{
+  "name": "motion-diagram",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/cli/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "render": "node src/cli/index.js render",
+    "studio": "remotion studio src/scenes/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@remotion/cli": "^4.0.487",
+    "@remotion/gif": "^4.0.487",
+    "@remotion/renderer": "^4.0.487",
+    "dagre": "^0.8.5",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "remotion": "^4.0.487"
+  },
+  "bin": {
+    "motion-diagram": "src/cli/index.js"
+  }
+}

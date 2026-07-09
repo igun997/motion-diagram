@@ -1,0 +1,30 @@
+{
+  "meta": { "title": "Login API Flow", "fps": 30, "width": 1920, "height": 1080, "mode": "video" },
+  "nodes": [
+    { "id": "client", "label": "Client", "shape": "rect", "icon": "user" },
+    { "id": "api", "label": "API Gateway", "shape": "rect", "icon": "server" },
+    { "id": "auth", "label": "Valid?", "shape": "diamond", "icon": "lock" },
+    { "id": "db", "label": "DB", "shape": "stadium", "icon": "database" },
+    { "id": "err", "label": "401 Error", "shape": "rect", "icon": "cross" }
+  ],
+  "edges": [
+    { "id": "e1", "from": "client", "to": "api", "label": "POST /login" },
+    { "id": "e2", "from": "api", "to": "auth", "label": "check" },
+    { "id": "e3", "from": "auth", "to": "db", "label": "yes" },
+    { "id": "e4", "from": "auth", "to": "err", "label": "no" }
+  ],
+  "timeline": [
+    { "at": 0,  "type": "reveal-node", "target": "client" },
+    { "at": 8,  "type": "reveal-node", "target": "api" },
+    { "at": 16, "type": "reveal-node", "target": "auth" },
+    { "at": 24, "type": "reveal-node", "target": "db" },
+    { "at": 32, "type": "reveal-node", "target": "err" },
+    { "at": 40, "type": "reveal-edge", "target": "e1" },
+    { "at": 58, "type": "reveal-edge", "target": "e2" },
+    { "at": 76, "type": "reveal-edge", "target": "e3" },
+    { "at": 94, "type": "reveal-edge", "target": "e4" },
+    { "at": 120, "type": "pulse", "edge": "e1", "color": "#38bdf8", "sfx": "whoosh", "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 155, "type": "pulse", "edge": "e2", "color": "#a78bfa", "sfx": "whoosh", "onArrive": { "flash": true, "sfx": "beep" } },
+    { "at": 190, "type": "pulse", "edge": "e3", "color": "#34d399", "sfx": "whoosh", "onArrive": { "flash": true, "sfx": "ding" } }
+  ]
+}
