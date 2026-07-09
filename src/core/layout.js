@@ -6,15 +6,25 @@ const NODE_W = 160;
 const NODE_H = 64;
 
 export function layoutDiagram(spec, opts = {}) {
-  const { rankdir = "TB", nodesep = 60, ranksep = 90 } = opts;
+  const { rankdir = "TB", nodesep = 130, ranksep = 150 } = opts;
 
-  const g = new dagre.graphlib.Graph();
-  g.setGraph({ rankdir, nodesep, ranksep, marginx: 40, marginy: 40 });
+  const g = new dagre.graphlib.Graph({ compound: true });
+  g.setGraph({ rankdir, nodesep, ranksep, marginx: 40, marginy: 40, clusterrank: "local" });
   g.setDefaultEdgeLabel(() => ({}));
+
+  // Register cluster nodes for each group so dagre reserves separate space.
+  const usedGroups = new Set();
+  for (const n of spec.nodes) {
+    if (n.group) usedGroups.add(n.group);
+  }
+  for (const gid of usedGroups) {
+    g.setNode(`cluster:${gid}`, {});
+  }
 
   for (const n of spec.nodes) {
     const w = n.shape === "diamond" ? NODE_W + 20 : NODE_W;
     g.setNode(n.id, { width: w, height: NODE_H });
+    if (n.group) g.setParent(n.id, `cluster:${n.group}`);
   }
   for (const e of spec.edges) {
     g.setEdge(e.from, e.to);
