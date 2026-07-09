@@ -36,7 +36,8 @@ async function main() {
   fs.mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
 
   if (mode === "carousel") {
-    const outDir = opts.out || `output/${path.basename(file, path.extname(file))}-carousel`;
+    const base = path.basename(file, path.extname(file)).replace(/-carousel$/, "");
+    const outDir = opts.out || `output/${base}-carousel`;
     fs.mkdirSync(path.resolve(outDir), { recursive: true });
     console.log(`Rendering carousel "${scene.meta?.title || file}" -> ${outDir}/`);
     const results = await renderCarousel(scene, path.resolve(outDir), (i, total, name, p) => {
