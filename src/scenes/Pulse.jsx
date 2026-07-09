@@ -4,14 +4,15 @@ import React from "react";
 import { interpolate } from "remotion";
 import { pointAt } from "./geometry.js";
 
-export function Pulse({ points, frame, startFrame, durationInFrames, color = "#38bdf8", trail = true }) {
+export function Pulse({ points, frame, startFrame, durationInFrames, color = "#38bdf8", trail = true, reverse = false }) {
   const local = frame - startFrame;
   if (local < 0 || local > durationInFrames) return null;
 
-  const t = interpolate(local, [0, durationInFrames], [0, 1], {
+  const raw = interpolate(local, [0, durationInFrames], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
+  const t = reverse ? 1 - raw : raw;
   const head = pointAt(points, t);
 
   const trailDots = [];

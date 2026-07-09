@@ -21,6 +21,23 @@ our checkout pipeline", "make a diagram video of the payment API".
         `onArrive.flash: true`, and sfx.
 3. Choose sfx **per event** (agent's call): `beep` on arrival, `whoosh` on send,
    `ding` on success/final, or `none`. Do not overuse — silence is fine.
+
+## SFX by purpose (agent decides intent)
+Map sound to the *meaning* of the moment, not mechanically:
+- **whoosh** — a request is SENT / leaves a node / fire-and-forget (outbound).
+- **beep** — a hop is RECEIVED / acknowledged / internal step done (transit).
+- **ding** — SUCCESS / final response delivered / commit / positive terminal.
+- **beep (low) + red pulse** — error/deny arrival (pair `#f43f5e` with `beep`).
+- **none** — reveals, background/return pulses, anything that would add noise.
+Rule: one dominant sound per beat. If two pulses arrive together, sfx the
+primary one only. End the whole flow on a single `ding`.
+
+## Request/response round-trips
+Simulate a full cycle on ONE edge:
+1. outbound pulse `from->to` (e.g. blue `#38bdf8`, sfx `whoosh`/`beep`).
+2. later, response pulse on the SAME edge with `"reverse": true` and a
+   different color (e.g. green `#34d399`) traveling `to->from`.
+Return pulses usually get `sfx: none` except the final one to the client (`ding`).
 4. Call `render_motion_diagram` (MP4) or `render_carousel` (grouped slides).
 
 ## Timing rules (30fps default)

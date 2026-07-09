@@ -70,6 +70,7 @@ export function VideoDiagram({ layout, events, nodeAppear, edgeDraw }) {
                   durationInFrames={e.durationInFrames}
                   color={e.color || "#38bdf8"}
                   trail={e.trail !== false}
+                  reverse={e.reverse === true}
                 />
               );
             })}

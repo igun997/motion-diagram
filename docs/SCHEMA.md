@@ -61,6 +61,7 @@ Drives all motion. `at` = frame offset (or seconds if `atSec`).
   "edge": "e1",
   "color": "#38bdf8",
   "speed": 1,                 // 1 = default travel duration
+  "reverse": false,           // true = travel to->from (response/return pulse)
   "trail": true,              // comet trail
   "onArrive": { "flash": true, "sfx": "beep" },
   // --- reveal-node / reveal-edge ---
