@@ -17,10 +17,23 @@ the agent designs the scene, this tool renders it.
 ## Install
 
 ```bash
+# one-off, no install
+npx motion-diagram render examples/login-flow.json -- --out login.mp4
+
+# or global
+npm install -g motion-diagram
+
+# or from a clone
 npm install
 ```
 
-First render downloads a headless Chrome (~once).
+Check prerequisites (Node >=18, ffmpeg, deps):
+
+```bash
+npx motion-diagram doctor
+```
+
+First render downloads a headless Chrome (~once). Full guide: `docs/INSTALL.md`.
 
 ## CLI
 
@@ -95,26 +108,52 @@ by the agent (`sfx` / `onArrive.sfx`), or `none`. Swap the WAV files to rebrand.
 `user client server api database cloud queue cache lock key gear bolt globe
 mobile mail file check cross warning`
 
-## MCP (for AI agents)
+## MCP + skill install (for AI agents)
 
-Run the server:
+Motion Diagram is designed to be driven by an AI agent over MCP. Install the
+skill into your agent with one command:
 
 ```bash
-npm run mcp
+# auto-detect installed agents and register the MCP server
+npx motion-diagram install-skill
+
+# or target a specific client
+npx motion-diagram install-skill --client cursor
+npx motion-diagram install-skill --client claude
+npx motion-diagram install-skill --client pi
 ```
 
-Register in an MCP client:
+This writes a `motion-diagram` entry into each agent's MCP config:
+
+| Agent  | Config file |
+| ------ | ----------- |
+| Cursor | `~/.cursor/mcp.json` |
+| Claude Desktop | `claude_desktop_config.json` (OS-specific dir) |
+| Pi     | `~/.pi/agent/mcp.json` |
+
+Installing the npm package also runs this automatically (`postinstall`), so a
+plain `npm install -g motion-diagram` registers the skill for any detected agent.
+Restart your agent afterward to load the tools.
+
+### Manual config
+
+Any MCP client works — point it at the `motion-diagram-mcp` command:
 
 ```json
 {
   "mcpServers": {
     "motion-diagram": {
-      "command": "node",
-      "args": ["/home/nst/WebstormProjects/motion-diagram/src/mcp/server.js"],
-      "env": { "MOTION_OUT_DIR": "/home/nst/WebstormProjects/motion-diagram/output" }
+      "command": "npx",
+      "args": ["-y", "motion-diagram-mcp"]
     }
   }
 }
+```
+
+Run the server directly for debugging:
+
+```bash
+npx motion-diagram-mcp        # or, from a clone: npm run mcp
 ```
 
 Tools:
@@ -123,7 +162,7 @@ Tools:
 - `render_motion_diagram` — scene → MP4
 - `render_carousel` — scene → GIF/WebP slides (by node `group`)
 
-Agent guidance: `docs/AGENT_SKILL.md`.
+Agent guidance: `docs/AGENT_SKILL.md`. Contributing: `CONTRIBUTING.md`.
 
 ## Project layout
 
