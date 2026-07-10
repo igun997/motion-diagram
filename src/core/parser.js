@@ -47,6 +47,7 @@ function splitEdge(line) {
 export function parseDiagram(text) {
   const nodes = new Map();
   const edges = [];
+  let edgeIndex = 0;
 
   const ensureNode = (token) => {
     const parsed = parseNodeToken(token);
@@ -73,7 +74,7 @@ export function parseDiagram(text) {
       const from = ensureNode(edge.fromTok);
       const to = ensureNode(edge.toTok);
       if (from && to) {
-        edges.push({ from: from.id, to: to.id, label: edge.edgeLabel });
+        edges.push({ id: `edge-${edgeIndex++}`, from: from.id, to: to.id, label: edge.edgeLabel });
       }
     } else {
       ensureNode(line);
