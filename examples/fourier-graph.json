@@ -1,0 +1,16 @@
+{
+  "meta": {
+    "title": "Fourier Square Wave Approximation",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080
+  },
+  "mode": "function",
+  "durationInFrames": 300,
+  "function": {
+    "expression": "sin(x) + sin(3*x)/3 + sin(5*x)/5",
+    "domain": [-6.28, 6.28],
+    "samples": 360
+  },
+  "audio": { "enabled": false }
+}

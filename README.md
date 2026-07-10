@@ -7,6 +7,15 @@ into an **animated MP4** (glowing pulses traveling edges, node pops, camera focu
 Built for content creators. Designed to be driven by an AI agent over **MCP** —
 the agent designs the scene, this tool renders it.
 
+## Showcase
+
+| Pendulum simulation                                        | Fourier graph approximation                       |
+| ---------------------------------------------------------- | ------------------------------------------------- |
+| [Download MP4](assets/showcase/pendulum.mp4)               | [Download MP4](assets/showcase/fourier-graph.mp4) |
+| Formula overlay, velocity vector, deterministic simulation | Safe `sin(x) + sin(3x)/3 + sin(5x)/5` graph trace |
+
+Source scenes: [`examples/pendulum-math.json`](examples/pendulum-math.json), [`examples/fourier-graph.json`](examples/fourier-graph.json).
+
 ## Stack
 
 - Remotion (React → MP4 via headless Chrome + ffmpeg)
@@ -161,6 +170,9 @@ Tools:
 - `get_scene_schema` — call first, returns authoring contract
 - `render_motion_diagram` — scene → MP4
 - `render_carousel` — scene → GIF/WebP slides (by node `group`)
+- `render_math_visualizer` — formula, function graph, or pendulum simulation → MP4
+
+Math authoring: `docs/MATH_SCHEMA.md`. Agent guidance: `skills/math-visualizer/SKILL.md`.
 
 Agent guidance: `docs/AGENT_SKILL.md`. Contributing: `CONTRIBUTING.md`.
 
