@@ -4,15 +4,20 @@ const PULSE_DEFAULT_FRAMES = 30;
 
 export function normalizeTimeline(events, fps) {
   const norm = (events || []).map((e, i) => {
-    const at = e.at != null ? e.at : Math.round((e.atSec || 0) * fps);
-    const dur =
-      e.durationInFrames != null
-        ? e.durationInFrames
-        : e.durationSec != null
-          ? Math.round(e.durationSec * fps)
-          : e.type === "pulse"
-            ? Math.round(PULSE_DEFAULT_FRAMES / (e.speed || 1))
-            : 18;
+    const at = Number.isFinite(e.at)
+      ? e.at
+      : Number.isFinite(e.atSec)
+        ? Math.round(e.atSec * fps)
+        : 0;
+    const dur = Number.isFinite(e.durationInFrames)
+      ? e.durationInFrames
+      : Number.isFinite(e.durationSec)
+        ? Math.round(e.durationSec * fps)
+        : e.type === "pulse"
+          ? Math.round(
+              PULSE_DEFAULT_FRAMES / (Number.isFinite(e.speed) && e.speed > 0 ? e.speed : 1)
+            )
+          : 18;
     return { ...e, at, durationInFrames: dur, _i: i };
   });
 
