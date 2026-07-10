@@ -161,6 +161,9 @@ Tools:
 - `get_scene_schema` — call first, returns authoring contract
 - `render_motion_diagram` — scene → MP4
 - `render_carousel` — scene → GIF/WebP slides (by node `group`)
+- `render_math_visualizer` — formula, function graph, or pendulum simulation → MP4
+
+Math authoring: `docs/MATH_SCHEMA.md`. Agent guidance: `skills/math-visualizer/SKILL.md`.
 
 Agent guidance: `docs/AGENT_SKILL.md`. Contributing: `CONTRIBUTING.md`.
 

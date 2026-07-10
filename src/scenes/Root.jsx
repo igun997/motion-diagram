@@ -3,11 +3,29 @@
 import React from "react";
 import { Composition } from "remotion";
 import { VideoDiagram } from "./VideoDiagram.jsx";
+import { MathVisualizer } from "./MathVisualizer.jsx";
 import { layoutDiagram } from "../core/layout.js";
 import { computeGroups } from "../core/groups.js";
 import { resolveTheme } from "./themes.js";
 import { applyPreset } from "../core/presets.js";
 import { normalizeTimeline, timelineDuration } from "../core/timeline.js";
+
+function loadMathScene() {
+  const raw = process.env.MOTION_MATH_JSON;
+  if (raw) {
+    try {
+      return JSON.parse(raw);
+    } catch {
+      // fall through to default
+    }
+  }
+  return {
+    mode: "formula",
+    meta: { fps: 30, width: 1920, height: 1080 },
+    durationInFrames: 120,
+    formula: { latex: "f(x)" },
+  };
+}
 
 function loadScene() {
   const raw = process.env.MOTION_SCENE_JSON;
@@ -55,6 +73,7 @@ function loadScene() {
 }
 
 export function RemotionRoot() {
+  const mathScene = loadMathScene();
   const scene = loadScene();
   const meta = applyPreset(scene.meta || {});
   const fps = meta.fps || 30;
@@ -68,24 +87,35 @@ export function RemotionRoot() {
   const duration = timelineDuration(events);
 
   return (
-    <Composition
-      id="MotionDiagram"
-      component={VideoDiagram}
-      durationInFrames={duration}
-      fps={fps}
-      width={width}
-      height={height}
-      defaultProps={{
-        layout,
-        events,
-        groups,
-        theme,
-        legend: scene.legend || [],
-        camera: meta.camera || "fit",
-        cameraZoom: meta.cameraZoom,
-        nodeAppear: 20,
-        edgeDraw: 18,
-      }}
-    />
+    <>
+      <Composition
+        id="MathVisualizer"
+        component={MathVisualizer}
+        durationInFrames={mathScene.durationInFrames || 120}
+        fps={mathScene.meta?.fps || 30}
+        width={mathScene.meta?.width || 1920}
+        height={mathScene.meta?.height || 1080}
+        defaultProps={{ scene: mathScene }}
+      />
+      <Composition
+        id="MotionDiagram"
+        component={VideoDiagram}
+        durationInFrames={duration}
+        fps={fps}
+        width={width}
+        height={height}
+        defaultProps={{
+          layout,
+          events,
+          groups,
+          theme,
+          legend: scene.legend || [],
+          camera: meta.camera || "fit",
+          cameraZoom: meta.cameraZoom,
+          nodeAppear: 20,
+          edgeDraw: 18,
+        }}
+      />
+    </>
   );
 }

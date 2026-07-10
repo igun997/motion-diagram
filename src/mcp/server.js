@@ -12,6 +12,8 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { renderVideo } from "../render/renderVideo.js";
 import { renderCarousel } from "../render/renderCarousel.js";
+import { renderMath } from "../render/renderMath.js";
+import { normalizeMathScene } from "../math/normalize.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "../..");
@@ -21,6 +23,28 @@ const OUT_DIR = process.env.MOTION_OUT_DIR || path.join(process.cwd(), "motion-d
 
 const SCHEMA_DOC = path.join(ROOT, "docs", "SCHEMA.md");
 const SKILL_DOC = path.join(ROOT, "docs", "AGENT_SKILL.md");
+
+const mathSceneSchema = {
+  type: "object",
+  required: ["mode"],
+  properties: {
+    meta: {
+      type: "object",
+      properties: {
+        title: { type: "string" },
+        fps: { type: "number" },
+        width: { type: "number" },
+        height: { type: "number" },
+      },
+    },
+    mode: { type: "string", enum: ["formula", "function", "simulation"] },
+    durationInFrames: { type: "number" },
+    formula: { type: "object" },
+    function: { type: "object" },
+    simulation: { type: "object", properties: { preset: { type: "string", enum: ["pendulum"] } } },
+    audio: { type: "object" },
+  },
+};
 
 const sceneSchema = {
   type: "object",
@@ -126,6 +150,20 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
       },
     },
     {
+      name: "render_math_visualizer",
+      description:
+        "Render formula animation, safe function graph, or pendulum simulation as MP4 with optional bundled sound cues. Use math scene schema; no arbitrary JavaScript or LaTex engine.",
+      inputSchema: {
+        type: "object",
+        required: ["scene"],
+        properties: {
+          scene: mathSceneSchema,
+          filename: { type: "string", description: "Output MP4 filename. Optional." },
+          outDir: { type: "string", description: "Absolute output directory. Optional." },
+        },
+      },
+    },
+    {
       name: "render_carousel",
       description:
         "Render a scene as an Instagram-style carousel: one animated slide per node 'group' (silent GIF + WebP each). Use node.group to define slides. Returns list of generated file paths.",
@@ -176,6 +214,17 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
       const outPath = path.join(outDir, file.endsWith(".mp4") ? file : file + ".mp4");
       await renderVideo(scene, outPath);
       return ok(`Rendered MP4: ${outPath}`);
+    }
+
+    if (name === "render_math_visualizer") {
+      const scene = normalizeMathScene(args.scene);
+      const outDir = args.outDir || OUT_DIR;
+      fs.mkdirSync(outDir, { recursive: true });
+      const file =
+        args.filename || `${(scene.meta.title || "math").replace(/\\W+/g, "-").toLowerCase()}.mp4`;
+      const outPath = path.join(outDir, file.endsWith(".mp4") ? file : `${file}.mp4`);
+      await renderMath(scene, outPath);
+      return ok(`Rendered math MP4: ${outPath}`);
     }
 
     if (name === "render_carousel") {

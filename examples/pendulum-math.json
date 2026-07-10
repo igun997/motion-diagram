@@ -1,0 +1,13 @@
+{
+  "meta": { "title": "Simple Pendulum", "fps": 30, "width": 1920, "height": 1080 },
+  "mode": "simulation",
+  "durationInFrames": 300,
+  "simulation": {
+    "preset": "pendulum",
+    "length": 2,
+    "gravity": 9.81,
+    "initialAngle": 0.7,
+    "initialVelocity": 0
+  },
+  "audio": { "enabled": true, "mapping": "velocity" }
+}
